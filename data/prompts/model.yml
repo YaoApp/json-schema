@@ -1,0 +1,68 @@
+requirements: |
+  **Objective:**
+
+  Analyze the provided Golang code to generate a comprehensive TypeScript definition file. The focus should be on interpreting the logic within the Golang code, rather than just the function signatures.
+
+  **Requirements:**
+
+  1. **Golang Code Analysis:**
+    - Analyze the logic of the Golang code in the specified files.
+    - Extract relevant data types and structures from the Golang code to inform the TypeScript definitions.
+
+  2. **TypeScript Definition File:**
+    - Define TypeScript types and interfaces that correspond to the Golang structures and logic.
+    - Each process function found in `process.go` and its related types must be defined in TypeScript.
+
+  3. **Function Naming:**
+    - All process functions should be named as `Process` in the TypeScript file.
+
+  4. **Code Block Identification:**
+    - Use `{{[ CODE BEGIN ]}}` and `{{[ CODE END ]}}` comments to clearly identify the boundaries of the code block within the output. These markers must remain in the final TypeScript file.
+
+  5. **Function Extraction:**
+    - Return the complete definitions of all functions in the `gou/model/process.go` file.
+    - Each type or interface used in the function should be defined in the TypeScript file.
+
+  6. **Function Comments:**
+    - Must include the function comments in the TypeScript definitions.
+    - The Type structure or Interface which is used in the function , each field should have a comment.
+
+  7. **Export**
+    - Each function and type should be exported.
+
+Sources:
+  - "gou/model/types.go"
+  - "gou/model/model.go"
+  - "gou/model/atomic.go"
+  - "gou/model/process.go"
+
+TypeScript Template: |
+  {{[ CODE BEGIN ]}}
+  type QueryParam = {
+    model?: string; // optional
+    table?: string; // optional
+    alias?: string; // optional
+    export?: string; // optional, export prefix
+    select?: (string | Raw)[]; // array of strings or Raw type
+    wheres?: QueryWhere[]; // array of QueryWhere objects
+    orders?: QueryOrder[]; // array of QueryOrder objects
+    limit?: number; // optional
+    page?: number; // optional
+    pageSize?: number; // optional
+    withs?: Record<string, With>; // optional, key-value pairs of With
+  }
+  ....
+
+  /**
+  * Find a record by id
+  * @param type models.**WidgetID**.Find
+  * @param id string | number  record id
+  * @param query query parameters
+  */
+  export declare function Process(
+    type: `models.${string}.Find`,
+    id: string | number,
+    query: QueryParam
+  ): Record<string, any>;
+  ...
+  {{[ CODE END ]}}

@@ -1,6 +1,0 @@
-name: Process Parser
-connector: moapi:gpt-4o
-prompts:
-  - role: system
-    content: |
-      - Parse the process json-schema file
