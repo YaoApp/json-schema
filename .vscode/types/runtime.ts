@@ -6,3 +6,5 @@ export * from "./runtime/http";
 export * from "./runtime/time";
 export * from "./runtime/log";
 export * from "./runtime/exception";
+export * from "./runtime/console";
+export * from "./runtime/global";

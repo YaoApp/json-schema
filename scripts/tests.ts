@@ -98,5 +98,5 @@ function TestLog() {
  */
 function TestException() {
   const ex = new Exception("This is an exception", 400);
-  console.log(ex.message);
+  console.log(ex);
 }
