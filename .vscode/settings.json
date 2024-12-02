@@ -1,4 +1,9 @@
 {
+  "files.associations": {
+    "*.sui": "html",
+    "*.yao": "jsonc"
+  },
+
   "json.schemas": [
     {
       "fileMatch": ["/**/*.mod.json", "/**/*.mod.jsonc", "/**/*.mod.yao"],
