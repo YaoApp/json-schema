@@ -8,3 +8,6 @@ export * from "./runtime/log";
 export * from "./runtime/exception";
 export * from "./runtime/console";
 export * from "./runtime/global";
+export * from "./runtime/io";
+export * from "./runtime/neo";
+export * from "./runtime/sui";

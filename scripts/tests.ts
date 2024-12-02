@@ -8,6 +8,7 @@ import {
   Query,
   Store,
   time,
+  sui,
 } from "@yao/runtime";
 
 function TestProcess() {
@@ -100,4 +101,8 @@ function TestLog() {
 function TestException() {
   const ex = new Exception("This is an exception", 400);
   console.log(ex);
+}
+
+function TestSUI(r: sui.Request) {
+  console.log(r.locale);
 }
