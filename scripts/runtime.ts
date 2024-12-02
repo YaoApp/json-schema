@@ -67,3 +67,15 @@ function GenerateTime() {
   const fs = new FS("app");
   fs.WriteFile(".vscode/types/runtime/time.d.ts", getCode(content));
 }
+
+/**
+ * Generate log Object definition
+ * yao run scripts.runtime.GenerateLog
+ */
+function GenerateLog() {
+  console.log("Generating Log Object definition");
+  const pmt = prompt("runtime/log.yml");
+  const content = send(pmt);
+  const fs = new FS("app");
+  fs.WriteFile(".vscode/types/runtime/log.d.ts", getCode(content));
+}

@@ -1,4 +1,4 @@
-import { FS, http, Process, Query, Store, time } from "@yao/runtime";
+import { FS, http, log, Process, Query, Store, time } from "@yao/runtime";
 
 function TestProcess() {
   Process("models.widget.Get", { wheres: [{ column: "id", value: 1 }] });
@@ -73,4 +73,13 @@ function TestQuery() {
 function TestTime() {
   time.Sleep(1000);
   time.After(1000, "models.widget.Get", 1);
+}
+
+function TestLog() {
+  log.Trace("This is a trace message");
+  log.Debug("This is a debug message");
+  log.Info("This is an info message");
+  log.Warn("This is a warn message");
+  log.Error("This is an error message");
+  log.Fatal("This is a fatal message");
 }
