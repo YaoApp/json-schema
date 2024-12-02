@@ -12,7 +12,7 @@ import type { FileSystemName } from "./process";
 export declare class FS {
   /**
    * Create a new instance of FS
-   * @param root Root path for the application.
+   * @param root Root path for the application. should be "app" or "data". "app": the root path of the application, "data": the root path of the data.
    */
   constructor(root: FileSystemName);
 
