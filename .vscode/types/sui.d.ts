@@ -1,24 +1,41 @@
-// libsui for frontend development
-
-// Declare the `__m` function for message localization
-export declare const __m: (message: string) => string;
-
-// Declare a global data object for SUI
-export declare const __sui_data: Record<string, any>;
+// TypeScript Declarations for YAO Pure JavaScript SDK
+// Author: Max <max@iqka.com>
+// Maintainer: https://yaoapps.com
 
 /**
- * Locale is the struct for localization settings
+ * Headers object for requests.
+ */
+export type Headers =
+  | Record<string, string>
+  | Record<string, string | string[]>;
+
+/**
+ * Localized messages and settings interface.
  */
 export declare interface Locale {
-  /** Locale name (e.g., "en-US") */
+  /**
+   * Locale name, e.g., "en-US".
+   */
   name?: string;
-  /** Key-value pairs for localization strings */
-  keys?: { [key: string]: string };
-  /** Message dictionary for localization */
-  messages?: { [key: string]: string };
-  /** Text direction ("ltr" for left-to-right or "rtl" for right-to-left) */
+
+  /**
+   * Key-value pairs for translations.
+   */
+  keys?: Record<string, string>;
+
+  /**
+   * Message templates or labels.
+   */
+  messages?: Record<string, string>;
+
+  /**
+   * Text direction (left-to-right or right-to-left).
+   */
   direction?: "ltr" | "rtl";
-  /** Timezone offset (e.g., "+08:00") */
+
+  /**
+   * Timezone, formatted as UTC offsets (e.g., "+05:30").
+   */
   timezone?:
     | "-12:00"
     | "-11:00"
@@ -58,98 +75,187 @@ export declare interface Locale {
     | "+12:00"
     | "+12:45"
     | "+13:00"
-    | "+14:00"; // Timezone
+    | "+14:00";
 }
 
 /**
- * Represents a UI Component
+ * Component type definition for modular UI components.
  */
 export declare type Component = {
+  /**
+   * The root HTML element of the component.
+   */
   root: HTMLElement;
+
+  /**
+   * Component state management interface.
+   */
   state: ComponentState;
+
+  /**
+   * Component store for state persistence.
+   */
   store: ComponentStore;
+
+  /**
+   * Query object for DOM traversal and manipulation.
+   */
   $root: SUIQuery;
+
+  /**
+   * Find an element inside the component.
+   */
   find: (selector: string | HTMLElement) => SUIQuery | null;
+
+  /**
+   * Query a single matching element.
+   */
   query: (selector: string) => HTMLElement | null;
+
+  /**
+   * Query all matching elements.
+   */
   queryAll: (selector: string) => NodeListOf<Element> | null;
+
+  /**
+   * Emit an event.
+   */
   emit: (name: string, detail?: EventData) => void;
+
+  /**
+   * Render a partial view with data.
+   */
   render: (
     name: string,
     data: Record<string, any>,
     option?: RenderOption
   ) => Promise<string>;
+
+  /**
+   * Optional lifecycle method called once.
+   */
   once?: () => void;
+
+  /**
+   * State watchers for reactive updates.
+   */
   watch?: Record<string, (value?: any) => void>;
+
+  /**
+   * Optional constants for the component.
+   */
   Constants?: Record<string, any>;
+
   [key: string]: any;
 };
 
 /**
- * Options for rendering a component
+ * Options for rendering components.
  */
 export declare type RenderOption = {
-  /** Target HTML element for rendering */
+  /**
+   * Target container for rendering.
+   */
   target?: HTMLElement;
-  /** Loader display during rendering (default: false) */
+
+  /**
+   * Show loader during rendering.
+   */
   showLoader?: HTMLElement | string | boolean;
-  /** Replace content during rendering (default: true) */
+
+  /**
+   * Whether to replace the existing content.
+   */
   replace?: boolean;
-  /** Use page-level data during rendering (default: false) */
+
+  /**
+   * Whether to include page data in rendering.
+   */
   withPageData?: boolean;
 };
 
 /**
- * Component state management
+ * Interface for managing component state.
  */
 export declare type ComponentState = {
+  /**
+   * Set a state property.
+   */
   Set: (key: string, value?: any) => void;
 };
 
 /**
- * Component store for managing key-value pairs
+ * Interface for managing component store data.
  */
 export declare type ComponentStore = {
+  /**
+   * Get a value by key.
+   */
   Get: (key: string) => string;
+
+  /**
+   * Set a value by key.
+   */
   Set: (key: string, value: string) => void;
+
+  /**
+   * Get JSON data by key.
+   */
   GetJSON: (key: string) => any;
+
+  /**
+   * Set JSON data by key.
+   */
   SetJSON: (key: string, value: any) => void;
+
+  /**
+   * Retrieve all data.
+   */
   GetData: () => Record<string, any>;
 };
 
 /**
- * Helper function to retrieve a component by root element or selector
- * @param selector - Root element or selector
- * @returns Component instance
+ * Helper function to retrieve a component by root element or selector.
  */
 export declare const $$: (selector: HTMLElement | string) => Component;
 
 /**
- * Event detail struct
- * @template T Element type
+ * Data structure for event details.
  */
 export declare type EventDetail<T = HTMLElement> = {
+  /**
+   * Root element of the component.
+   */
   rootElement: HTMLElement;
+
+  /**
+   * Event target element.
+   */
   targetElement: T;
 };
 
 /**
- * Event data structure
+ * Generic type for event data.
  */
 export declare type EventData = Record<string, any>;
 
 /**
- * State object passed during certain events
+ * State object for event propagation.
  */
 export declare type State = {
+  /**
+   * Target element.
+   */
   target: HTMLElement;
+
+  /**
+   * Stop event propagation.
+   */
   stopPropagation(): void;
 };
 
 /**
- * Creates a new render instance for a component
- * @param component - Component or selector
- * @param option - Render options
- * @returns Render instance
+ * Create a rendering instance for a component.
  */
 export declare function $Render(
   component: Component | string,
@@ -157,106 +263,167 @@ export declare function $Render(
 ): SUIRender;
 
 /**
- * Render class for partial view execution
+ * Class representing a rendering operation for components.
  */
 export declare class SUIRender {
+  /**
+   * Create a rendering instance.
+   */
   constructor(comp: Component | string, option?: RenderOption);
 
   /**
-   * Execute a partial view render
-   * @param name - Name of the partial view
-   * @param data - Data for rendering
-   * @returns Rendered HTML string or error message
+   * Execute a partial view render with provided data.
    */
   Exec(name: string, data: Record<string, any>): Promise<string>;
 }
 
 /**
- * Retrieves the store for a specified element
- * @param selector - Element or selector
- * @returns Store instance
+ * Get the store associated with an element or selector.
  */
 export declare function $Store(
   selector: HTMLElement | string
 ): ComponentStore | null;
 
 /**
- * Query DOM elements and return a SUIQuery instance
- * @param selector - DOM selector or element
- * @returns SUIQuery instance
+ * Query the DOM for an element or elements.
  */
 export declare function $Query(selector: string | HTMLElement): SUIQuery;
 
 /**
- * Helper class for querying and manipulating DOM elements
+ * Class for DOM manipulation and traversal.
  */
 export declare class SUIQuery {
+  /**
+   * Create a query instance.
+   */
   constructor(selector: string | Element);
 
-  /** Iterates over the selected elements */
+  /**
+   * Iterate over elements.
+   */
   each(callback: (element: SUIQuery, index: number) => void): void;
 
-  /** Get the first matched element */
+  /**
+   * Get the current element.
+   */
   elm(): Element | null;
 
-  /** Get all matched elements */
+  /**
+   * Get all matched elements.
+   */
   elms(): NodeListOf<Element> | null;
 
-  /** Find a descendant element */
+  /**
+   * Find child elements by selector.
+   */
   find(selector: string): SUIQuery | null;
 
-  /** Find the closest ancestor matching the selector */
+  /**
+   * Find the closest matching ancestor.
+   */
   closest(selector: string): SUIQuery | null;
 
-  /** Add event listeners */
+  /**
+   * Add event listener.
+   */
   on(event: string, callback: (event: Event) => void): SUIQuery;
 
-  /** Get the associated component of the element */
-  $$(): Component;
+  /**
+   * Get the associated component.
+   */
+  $$(): Component | null;
 
-  /** Get the data store for the element */
+  /**
+   * Get the associated store.
+   */
   store(): ComponentStore | null;
 
-  /** Get attribute value */
+  /**
+   * Get an attribute value.
+   */
   attr(name: string): string | null;
 
-  /** Get data attribute value */
+  /**
+   * Get data-attribute value.
+   */
   data(name: string): string | null;
 
-  /** Get JSON attribute value */
+  /**
+   * Get JSON data.
+   */
   json(name: string): any | null;
 
-  /** Check if the element has a specific class */
+  /**
+   * Check if the element has a class.
+   */
   hasClass(className: string): boolean;
 
-  /** Get or set inner HTML */
+  /**
+   * Get a property value.
+   */
+  prop(name: string): any | null;
+
+  /**
+   * Remove classes.
+   */
+  removeClass(className: string | string[]): SUIQuery;
+
+  /**
+   * Toggle classes.
+   */
+  toggleClass(className: string | string[]): SUIQuery;
+
+  /**
+   * Add classes.
+   */
+  addClass(className: string | string[]): SUIQuery;
+
+  /**
+   * Get or set inner HTML.
+   */
   html(html?: string): SUIQuery | string;
 }
 
 /**
- * Backend API interface
- * @template T Response type
+ * Create a backend request handler for calling APIs.
+ */
+export declare function $Backend<T = any>(
+  route?: string,
+  headers?: Headers
+): SUIBackend<T>;
+
+/**
+ * Class for backend API calls.
  */
 export declare class SUIBackend<T = any> {
-  constructor(
-    route: string,
-    headers?: [string, string][] | Record<string, string> | Headers
-  );
+  /**
+   * Create a backend instance.
+   */
+  constructor(route?: string, headers?: Headers);
 
-  /** Call a backend method with arguments */
-  Call(method: string, ...args: any[]): Promise<T>;
+  /**
+   * Call a backend API method with arguments.
+   */
+  Call(method: string, ...args: any): Promise<T>;
 }
 
 /**
- * Main Yao SDK for API interaction
+ * Class for handling YAO API interactions.
  */
 export declare class Yao {
+  /**
+   * Initialize Yao API client.
+   */
   constructor(host?: string);
 
-  /** Perform a GET request */
+  /**
+   * Perform a GET request.
+   */
   Get(path: string, params?: object, headers?: Headers): Promise<any>;
 
-  /** Perform a POST request */
+  /**
+   * Perform a POST request.
+   */
   Post(
     path: string,
     data?: object,
@@ -264,7 +431,9 @@ export declare class Yao {
     headers?: Headers
   ): Promise<any>;
 
-  /** Download a file */
+  /**
+   * Download a file from the API.
+   */
   Download(
     path: string,
     params: object,
@@ -272,7 +441,9 @@ export declare class Yao {
     headers?: Headers
   ): Promise<void>;
 
-  /** Fetch API for generic requests */
+  /**
+   * Perform a fetch request to the API.
+   */
   Fetch(
     method: string,
     path: string,
@@ -282,14 +453,23 @@ export declare class Yao {
     isblob?: boolean
   ): Promise<any>;
 
-  /** Get or set cookies */
-  Cookie(name: string): string | null;
-  SetCookie(name: string, value: string, expireDays?: number): void;
-  DeleteCookie(name: string): void;
-
-  /** Serialize an object to a query string */
-  Serialize(obj: { [key: string]: any }): string;
-
-  /** Retrieve an authentication token */
+  /**
+   * Get the stored token.
+   */
   Token(): string;
+
+  /**
+   * Get a cookie value.
+   */
+  Cookie(cookieName: string): string | null;
+
+  /**
+   * Set a cookie.
+   */
+  SetCookie(cookieName: string, cookieValue: string, expireDays?: number): void;
+
+  /**
+   * Delete a cookie.
+   */
+  DeleteCookie(cookieName: string): void;
 }
