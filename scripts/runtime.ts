@@ -55,3 +55,15 @@ function GenerateHttp() {
   const fs = new FS("app");
   fs.WriteFile(".vscode/types/runtime/http.d.ts", getCode(content));
 }
+
+/**
+ * Generate Time Object definition
+ * yao run scripts.runtime.GenerateTime
+ */
+function GenerateTime() {
+  console.log("Generating Time Object definition");
+  const pmt = prompt("runtime/time.yml");
+  const content = send(pmt);
+  const fs = new FS("app");
+  fs.WriteFile(".vscode/types/runtime/time.d.ts", getCode(content));
+}

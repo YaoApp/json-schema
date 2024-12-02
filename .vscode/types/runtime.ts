@@ -3,3 +3,4 @@ export * from "./runtime/fs";
 export * from "./runtime/store";
 export * from "./runtime/query";
 export * from "./runtime/http";
+export * from "./runtime/time";

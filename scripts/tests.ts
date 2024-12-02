@@ -1,4 +1,4 @@
-import { FS, http, Process, Query, Store } from "@yao/runtime";
+import { FS, http, Process, Query, Store, time } from "@yao/runtime";
 
 function TestProcess() {
   Process("models.widget.Get", { wheres: [{ column: "id", value: 1 }] });
@@ -68,4 +68,9 @@ function TestQuery() {
   });
 
   console.log(rows);
+}
+
+function TestTime() {
+  time.Sleep(1000);
+  time.After(1000, "models.widget.Get", 1);
 }
