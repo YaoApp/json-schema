@@ -77,9 +77,11 @@ export type MigrateOption = {
 };
 
 /**
- * The search result.
+ * Represents a dataset with pagination information.
+ * This type is commonly used for paginated data retrieval,
+ * such as search results or lists with multiple pages.
  */
-export type SearchResult = {
+export type PagedData = {
   /**
    * The data items.
    */
