@@ -1,155 +1,73 @@
 
+// TypeScript type definitions for the Golang code
 
-type QueryParam = {
-  model?: string; // optional model name
-  table?: string; // optional table name
-  alias?: string; // optional alias
+export type QueryParam = {
+  model?: string; // optional, the model to query
+  table?: string; // optional, the table to query
+  alias?: string; // optional, table alias
   export?: string; // optional, export prefix
-  select?: (string | Raw)[]; // array of strings or Raw type
-  wheres?: QueryWhere[]; // array of QueryWhere objects
-  orders?: QueryOrder[]; // array of QueryOrder objects
-  limit?: number; // optional limit for the query
-  page?: number; // optional page number for pagination
-  pageSize?: number; // optional page size for pagination
-  withs?: Record<string, With>; // optional, key-value pairs of With
+  select?: (string | Raw)[]; // optional, select columns, can be strings or Raw
+  wheres?: QueryWhere[]; // optional, array of where conditions
+  orders?: QueryOrder[]; // optional, array of ordering conditions
+  limit?: number; // optional, limit records
+  page?: number; // optional, pagination page number
+  pageSize?: number; // optional, number of records per page
+  withs?: Record<string, With>; // optional, mapping of relations
 }
 
-type QueryWhere = {
-  rel?: string; // optional relation name
-  column?: string | number; // column name or index
-  value?: any; // value to compare against
-  method?: string; // query method like where, orwhere, etc.
-  op?: string; // operation like eq, gt, lt, etc.
-  wheres?: QueryWhere[]; // nested where conditions
+export type Raw = any; // Placeholder for actually defining Raw type
+
+export type QueryWhere = {
+  rel?: string; // optional, relation name
+  column?: string | Raw; // column to apply where on
+  value?: any; // the value to compare with
+  method?: string; // method for where clause such as 'where', 'orwhere'
+  op?: string; // operator such as 'eq', 'gt'
+  wheres?: QueryWhere[]; // nested wheres for grouped conditions
 }
 
-type QueryOrder = {
-  rel?: string; // optional relation name
+export type QueryOrder = {
+  rel?: string; // optional, relation name
   column: string; // column to order by
-  option?: string; // ordering option like asc or desc
+  option?: string; // ordering option 'asc', 'desc'
 }
 
-type With = {
-  name: string; // name of the relation
+export type With = {
+  name: string; // the relation name
   query?: QueryParam; // query parameters for the relation
-}
-
-type Raw = any; // Placeholder for the Raw type
-
-type ValidateResponse = {
-  line?: number; // line number of the error
-  column?: string; // column name with error
-  messages?: string[]; // array of error messages
-}
-
-type MetaData = {
-  name?: string; // metadata name
-  connector?: string; // database connector type
-  table?: Table; // table options
-  columns?: Column[]; // array of column definitions
-  indexes?: Index[]; // array of index definitions
-  relations?: Record<string, Relation>; // map of relations
-  values?: Map<string, any>[]; // array of initial values
-  option?: Option; // model options
-}
-
-type Column = {
-  label?: string; // optional label for the column
-  name: string; // column name
-  type?: string; // column data type
-  title?: string; // column title
-  description?: string; // column description
-  comment?: string; // column comment
-  length?: number; // column length
-  precision?: number; // column precision
-  scale?: number; // column scale
-  nullable?: boolean; // whether the column is nullable
-  option?: string[]; // additional options for the column
-  default?: any; // default value for the column
-  defaultRaw?: string; // raw default value expression
-  example?: any; // example value for the column
-  generate?: string; // generation strategy like UUID, Increment
-  crypt?: string; // encryption method, if any
-  validations?: Validation[]; // validation rules for the column
-  index?: boolean; // whether the column is indexed
-  unique?: boolean; // whether the column value must be unique
-  primary?: boolean; // whether the column is a primary key
-}
-
-type Validation = {
-  method: string; // validation method name
-  args?: any[]; // arguments for the validation method
-  message?: string; // error message for validation failure
-}
-
-type Index = {
-  comment?: string; // optional comment for the index
-  name?: string; // index name
-  columns?: string[]; // columns included in the index
-  type?: string; // index type such as primary, unique, etc.
-}
-
-type Table = {
-  name?: string; // optional table name, defaults to model name
-  prefix?: string; // optional table prefix
-  comment?: string; // optional table comment
-  engine?: string; // optional storage engine (MySQL only)
-  collation?: string; // optional collation
-  charset?: string; // optional character set
-  primaryKeys?: string[]; // primary keys of the table
-}
-
-type Relation = {
-  name: string; // relation name
-  type: string; // type of the relation
-  key?: string; // local key
-  model?: string; // related model
-  foreign?: string; // foreign key
-  links?: Relation[]; // linking relations
-  query?: QueryParam; // query parameters for the relation
-}
-
-type Option = {
-  timestamps?: boolean; // whether to use created_at and updated_at fields
-  softDeletes?: boolean; // whether to use a deleted_at field
-  trackings?: boolean; // whether to track created_by, updated_by, deleted_by
-  constraints?: boolean; // whether constraints are defined
-  permission?: boolean; // whether to use a __permission field
-  logging?: boolean; // whether to use a __logging_id field
-  readonly?: boolean; // whether the model is read-only
 }
 
 /**
  * Find a record by id
- * @param type models.**WidgetID**.Find
+ * @param process models.**WidgetID**.Find
  * @param id string | number record id
  * @param query query parameters
  */
 export declare function Process(
-  type: `models.${string}.Find`,
+  process: `models.${string}.Find`,
   id: string | number,
   query: QueryParam
 ): Record<string, any>;
 
 /**
- * Get records by query
- * @param type models.**WidgetID**.Get
+ * Get records based on query parameters
+ * @param process models.**WidgetID**.Get
  * @param query query parameters
  */
 export declare function Process(
-  type: `models.${string}.Get`,
+  process: `models.${string}.Get`,
   query: QueryParam
 ): Record<string, any>[];
 
 /**
- * Paginate records by query
- * @param type models.**WidgetID**.Paginate
+ * Paginate records based on query parameters
+ * @param process models.**WidgetID**.Paginate
  * @param query query parameters
  * @param page number page number
- * @param pageSize number page size
+ * @param pageSize number size of page
  */
 export declare function Process(
-  type: `models.${string}.Paginate`,
+  process: `models.${string}.Paginate`,
   query: QueryParam,
   page: number,
   pageSize: number
@@ -157,155 +75,185 @@ export declare function Process(
 
 /**
  * Create a new record
- * @param type models.**WidgetID**.Create
- * @param row data to create
+ * @param process models.**WidgetID**.Create
+ * @param row new record data
  */
 export declare function Process(
-  type: `models.${string}.Create`,
+  process: `models.${string}.Create`,
   row: Record<string, any>
 ): number;
 
 /**
  * Update a record by id
- * @param type models.**WidgetID**.Update
+ * @param process models.**WidgetID**.Update
  * @param id string | number record id
  * @param row data to update
  */
 export declare function Process(
-  type: `models.${string}.Update`,
+  process: `models.${string}.Update`,
   id: string | number,
   row: Record<string, any>
 ): void;
 
 /**
- * Save a record (insert or update)
- * @param type models.**WidgetID**.Save
- * @param row data to save
+ * Save a record (create or update)
+ * @param process models.**WidgetID**.Save
+ * @param row record data
  */
 export declare function Process(
-  type: `models.${string}.Save`,
+  process: `models.${string}.Save`,
   row: Record<string, any>
 ): number;
 
 /**
- * Delete a record by id (soft delete)
- * @param type models.**WidgetID**.Delete
+ * Delete a record by id
+ * @param process models.**WidgetID**.Delete
  * @param id string | number record id
  */
 export declare function Process(
-  type: `models.${string}.Delete`,
+  process: `models.${string}.Delete`,
   id: string | number
 ): void;
 
 /**
- * Destroy a record by id (permanent delete)
- * @param type models.**WidgetID**.Destroy
+ * Destroy a record by id
+ * @param process models.**WidgetID**.Destroy
  * @param id string | number record id
  */
 export declare function Process(
-  type: `models.${string}.Destroy`,
+  process: `models.${string}.Destroy`,
   id: string | number
 ): void;
 
 /**
  * Insert multiple records
- * @param type models.**WidgetID**.Insert
- * @param columns array of column names
- * @param rows array of row values
+ * @param process models.**WidgetID**.Insert
+ * @param columns column names
+ * @param rows data rows to insert
  */
 export declare function Process(
-  type: `models.${string}.Insert`,
+  process: `models.${string}.Insert`,
   columns: string[],
-  rows: any[][]
+  rows: Array<Array<any>>
 ): void;
 
 /**
- * Update records matching criteria
- * @param type models.**WidgetID**.UpdateWhere
+ * Update records based on conditions
+ * @param process models.**WidgetID**.UpdateWhere
  * @param query query parameters
  * @param row data to update
  */
 export declare function Process(
-  type: `models.${string}.UpdateWhere`,
+  process: `models.${string}.UpdateWhere`,
   query: QueryParam,
   row: Record<string, any>
 ): number;
 
 /**
- * Delete records matching criteria (soft delete)
- * @param type models.**WidgetID**.DeleteWhere
+ * Delete records based on conditions
+ * @param process models.**WidgetID**.DeleteWhere
  * @param query query parameters
  */
 export declare function Process(
-  type: `models.${string}.DeleteWhere`,
+  process: `models.${string}.DeleteWhere`,
   query: QueryParam
 ): number;
 
 /**
- * Destroy records matching criteria (permanent delete)
- * @param type models.**WidgetID**.DestroyWhere
+ * Destroy records based on conditions
+ * @param process models.**WidgetID**.DestroyWhere
  * @param query query parameters
  */
 export declare function Process(
-  type: `models.${string}.DestroyWhere`,
+  process: `models.${string}.DestroyWhere`,
   query: QueryParam
 ): number;
 
 /**
- * Save each record from a list
- * @param type models.**WidgetID**.EachSave
- * @param rows list of rows to save
- * @param eachRow optional row values to apply to each save
+ * Save multiple records
+ * @param process models.**WidgetID**.EachSave
+ * @param records records data
+ * @param eachRow additional data applied to each row
  */
 export declare function Process(
-  type: `models.${string}.EachSave`,
-  rows: Record<string, any>[],
+  process: `models.${string}.EachSave`,
+  records: Array<Record<string, any>>,
   eachRow?: Record<string, any>
 ): number[];
 
 /**
- * Migrate the model (create or update table structure)
- * @param type models.**WidgetID**.Migrate
- * @param force boolean whether to force the migration
+ * Delete specified records and save new records
+ * @param process models.**WidgetID**.EachSaveAfterDelete
+ * @param ids record ids to delete
+ * @param records new records data
+ * @param eachRow additional data applied to each new row
  */
 export declare function Process(
-  type: `models.${string}.Migrate`,
-  force?: boolean
+  process: `models.${string}.EachSaveAfterDelete`,
+  ids: number[],
+  records: Array<Record<string, any>>,
+  eachRow?: Record<string, any>
+): number[];
+
+/**
+ * Get select options
+ * @param process models.**WidgetID**.SelectOption
+ * @param keyword search keyword
+ * @param name property to use as name, default 'name'
+ * @param value property to use as value, default 'id'
+ * @param limit max number of results, default 20
+ */
+export declare function Process(
+  process: `models.${string}.SelectOption`,
+  keyword?: string,
+  name?: string,
+  value?: string,
+  limit?: number,
+): Record<'name' | 'id', any>[];
+
+/**
+ * Migrate the model
+ * @param process models.**WidgetID**.Migrate
+ * @param force whether to force the migration
+ */
+export declare function Process(
+  process: `models.${string}.Migrate`,
+  force?: boolean,
 ): void;
 
 /**
- * Load a model from file or source
- * @param type models.**WidgetID**.Load
- * @param file string model file path
- * @param source optional string, model source code
+ * Load the model
+ * @param process models.**WidgetID**.Load
+ * @param file the file path
+ * @param source optional source data
  */
 export declare function Process(
-  type: `models.${string}.Load`,
+  process: `models.${string}.Load`,
   file: string,
   source?: string
 ): void;
 
 /**
  * Reload the model
- * @param type models.**WidgetID**.Reload
+ * @param process models.**WidgetID**.Reload
  */
 export declare function Process(
-  type: `models.${string}.Reload`
+  process: `models.${string}.Reload`,
 ): void;
 
 /**
- * Read the model's metadata
- * @param type models.**WidgetID**.Read
+ * Read the model DSL
+ * @param process models.**WidgetID**.Read
  */
 export declare function Process(
-  type: `models.${string}.Read`
-): MetaData;
+  process: `models.${string}.Read`
+): any;
 
 /**
- * Check if a model exists
- * @param type models.**WidgetID**.Exists
+ * Check if the model is loaded
+ * @param process models.**WidgetID**.Exists
  */
 export declare function Process(
-  type: `models.${string}.Exists`
+  process: `models.${string}.Exists`
 ): boolean;
 

@@ -10,3 +10,7 @@ function TestProcess() {
     10
   );
 }
+
+function TestFS() {
+  Process("fs.app.ReadFile", "app/models/widget.ts");
+}

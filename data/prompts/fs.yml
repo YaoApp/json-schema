@@ -13,7 +13,7 @@ requirements: |
     - Define TypeScript types and interfaces that correspond to the Golang structures and logic.
     - Each process function found in `process.go` and its related types must be defined in TypeScript.
     - DO NOT use the Promise type in the TypeScript definitions.
-    - the process argument in the function name should be in the format of `fs.${FileSystemRoot}.FunctionName`, e.g. `models.pet.Find`.
+    - the process argument in the function name should be in the format of `fs.${FileSystemRoot}.${FunctionName}`, e.g. `fs.app.ReadFile`.
 
   3. **Function Naming:**
     - All process functions should be named as `Process` in the TypeScript file.
@@ -24,7 +24,7 @@ requirements: |
   5. **Function Extraction:**
     - Return the complete definitions of all functions in the `gou/model/process.go` file.
     - Each type or interface used in the function **should be** defined in the TypeScript file.
-
+    
   6. **Function Comments:**
     - Must include the function comments in the TypeScript definitions.
     - The Type structure or Interface which is used in the function , each field should have a comment.
@@ -34,40 +34,26 @@ requirements: |
     - Each type should be exported.
 
 Sources:
-  - "gou/model/types.go"
-  - "gou/model/model.go"
-  - "gou/model/atomic.go"
-  - "gou/model/process.go"
+  - "gou/fs/types.go"
+  - "gou/fs/fs.go"
+  - "gou/fs/process.go"
 
 TypeScript Template: |
   ```typescript
   {{[ CODE BEGIN ]}}
-  type QueryParam = {
-    model?: string; // optional
-    table?: string; // optional
-    alias?: string; // optional
-    export?: string; // optional, export prefix
-    select?: (string | Raw)[]; // array of strings or Raw type
-    wheres?: QueryWhere[]; // array of QueryWhere objects
-    orders?: QueryOrder[]; // array of QueryOrder objects
-    limit?: number; // optional
-    page?: number; // optional
-    pageSize?: number; // optional
-    withs?: Record<string, With>; // optional, key-value pairs of With
-  }
+  export type FileSystemRoot = "app" | "data";
+  export type XXXX = {}
   ....
 
   /**
-  * Find a record by id
-  * @param name models.**WidgetID**.Find
-  * @param id string | number  record id
-  * @param query query parameters
+  * Read file content
+  * @param name fs.**Root**.ReadFile File system root, app or data
+  * @param filename string file name relative to the root
   */
   export declare function Process(
-    process: `models.${string}.Find`,
-    id: string | number,
-    query: QueryParam
-  ): Record<string, any>;
+    process: `fs.${FileSystemRoot}.ReadFile`,
+    filename: string
+  ): string;
   ...
   {{[ CODE END ]}}
   ```
