@@ -1,0 +1,53 @@
+
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/YaoSchedule.Schedule",
+  "definitions": {
+    "YaoSchedule.Schedule": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "Version [Management Field]"
+        },
+        "decription": {
+          "type": "string",
+          "description": "Description [Management Field]"
+        },
+        "comment": {
+          "type": "string",
+          "description": "Comment [Management Field]"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name"
+        },
+        "process": {
+          "type": "string",
+          "description": "Processor, choose between processor and task"
+        },
+        "schedule": {
+          "type": "string",
+          "description": "Scheduled execution time, formatted like Linux crontab"
+        },
+        "task": {
+          "type": "string",
+          "description": "Task name, defined in task.json"
+        },
+        "args": {
+          "type": "array",
+          "items": {},
+          "description": "Processor arguments"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "schedule"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

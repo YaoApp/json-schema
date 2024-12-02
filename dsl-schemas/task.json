@@ -1,0 +1,89 @@
+
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/YaoTask.Task",
+  "definitions": {
+    "YaoTask.Task": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "Version [Management Field]"
+        },
+        "decription": {
+          "type": "string",
+          "description": "Description [Management Field]"
+        },
+        "comment": {
+          "type": "string",
+          "description": "Comment [Management Field]"
+        },
+        "name": {
+          "type": "string",
+          "description": "Task Name"
+        },
+        "process": {
+          "type": "string",
+          "description": "The processor bound to this task, must be configured"
+        },
+        "size": {
+          "type": "number",
+          "description": "Job queue size, default is 1024"
+        },
+        "worker_nums": {
+          "type": "number",
+          "description": "Specify the number of processes, default is 1"
+        },
+        "attempt_after": {
+          "type": "number",
+          "description": "Retry interval"
+        },
+        "attempts": {
+          "type": "number",
+          "description": "Number of retry attempts on failure"
+        },
+        "timeout": {
+          "type": "number",
+          "description": "Timeout in seconds, default is 300"
+        },
+        "event": {
+          "type": "object",
+          "properties": {
+            "next": {
+              "type": "string",
+              "description": "Callback processor for generating a unique task id"
+            },
+            "add": {
+              "type": "string",
+              "description": "Processor triggered when adding a task"
+            },
+            "success": {
+              "type": "string",
+              "description": "Processor triggered when a task is successful"
+            },
+            "error": {
+              "type": "string",
+              "description": "Processor triggered after task failure"
+            },
+            "progress": {
+              "type": "string",
+              "description": "Processor called during task processing"
+            }
+          },
+          "additionalProperties": false,
+          "description": "Event Handling"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "process",
+        "event"
+      ],
+      "additionalProperties": false,
+      "description": "Concurrent Task"
+    }
+  }
+}

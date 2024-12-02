@@ -1,0 +1,51 @@
+
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/YaoStore.Store",
+  "definitions": {
+    "YaoStore.Store": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "Version [management field]"
+        },
+        "decription": {
+          "type": "string",
+          "description": "Description [management field]"
+        },
+        "comment": {
+          "type": "string",
+          "description": "Comment [management field]"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description"
+        },
+        "connector": {
+          "type": "string",
+          "description": "Bound connector name (connector) Yao v0.10.2+"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type `lru` LRU cache (effective when connector is empty)"
+        },
+        "option": {
+          "type": "object",
+          "description": "Configuration `{\"size\":10240}` effective when type is `lru`, where size is the LRU cache size"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

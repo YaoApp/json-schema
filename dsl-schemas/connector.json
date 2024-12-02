@@ -1,0 +1,254 @@
+
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/YaoConnector.ConnectorDSL",
+  "definitions": {
+    "YaoConnector.ConnectorDSL": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "type": "string",
+          "description": "Language"
+        },
+        "version": {
+          "type": "string",
+          "description": "Version [Management Field]"
+        },
+        "decription": {
+          "type": "string",
+          "description": "Description [Management Field]"
+        },
+        "comment": {
+          "type": "string",
+          "description": "Comment [Management Field]"
+        },
+        "type": {
+          "$ref": "#/definitions/YaoConnector.ConnectorEnum",
+          "description": "Connector type, currently supports `mysql`, `sqlite3`, `mongo`, and `redis`"
+        },
+        "name": {
+          "type": "string",
+          "description": "Connector name"
+        },
+        "label": {
+          "type": "string",
+          "description": "Label display"
+        },
+        "options": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/YaoConnector.XunOption"
+            },
+            {
+              "$ref": "#/definitions/YaoConnector.RedisOption"
+            },
+            {
+              "$ref": "#/definitions/YaoConnector.Sqlite3Option"
+            },
+            {
+              "$ref": "#/definitions/YaoConnector.MongoDBOption"
+            },
+            {
+              "$ref": "#/definitions/YaoConnector.OpenAIOption"
+            }
+          ],
+          "description": "Connector configuration items"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "YaoConnector.ConnectorEnum": {
+      "type": "string",
+      "enum": [
+        "mysql",
+        "sqlite",
+        "sqlite3",
+        "postgres",
+        "redis",
+        "mongo",
+        "openai",
+        "hdb"
+      ]
+    },
+    "YaoConnector.XunOption": {
+      "type": "object",
+      "properties": {
+        "db": {
+          "type": "string",
+          "description": "Database name, supports using `$ENV.variable_name` to read environment variables"
+        },
+        "prefix": {
+          "type": "string",
+          "description": "Table prefix"
+        },
+        "charset": {
+          "type": "string",
+          "description": "MySQL charset"
+        },
+        "collation": {
+          "type": "string",
+          "description": "MySQL collation"
+        },
+        "parseTime": {
+          "type": "boolean",
+          "description": "Parse time"
+        },
+        "timeout": {
+          "type": "boolean",
+          "description": "Connection timeout"
+        },
+        "file": {
+          "type": "string",
+          "description": "SQLite3 database file path, supports using `$ENV.variable_name` to read environment variables"
+        },
+        "params": {
+          "type": "object",
+          "description": "Other parameters"
+        },
+        "hosts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoConnector.XunDBHost"
+          },
+          "description": "List of servers"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoConnector.XunDBHost": {
+      "type": "object",
+      "properties": {
+        "host": {
+          "type": "string",
+          "description": "MySQL Host, supports using `$ENV.variable_name` to read environment variables"
+        },
+        "port": {
+          "type": "string",
+          "description": "MySQL Port, supports using `$ENV.variable_name` to read environment variables"
+        },
+        "user": {
+          "type": "string",
+          "description": "MySQL User name, supports using `$ENV.variable_name` to read environment variables"
+        },
+        "pass": {
+          "type": "string",
+          "description": "MySQL Password, supports using `$ENV.variable_name` to read environment variables"
+        },
+        "primary": {
+          "type": "boolean",
+          "description": "`true` indicates a primary database, `false` indicates a replica"
+        }
+      },
+      "additionalProperties": false,
+      "description": "List of servers"
+    },
+    "YaoConnector.RedisOption": {
+      "type": "object",
+      "properties": {
+        "host": {
+          "type": "string",
+          "description": "Redis Host, supports using `$ENV.variable_name` to read environment variables"
+        },
+        "port": {
+          "type": "string",
+          "description": "Redis Port, supports using `$ENV.variable_name` to read environment variables"
+        },
+        "user": {
+          "type": "string",
+          "description": "Redis User name, supports using `$ENV.variable_name` to read environment variables"
+        },
+        "pass": {
+          "type": "string",
+          "description": "Redis Password, supports using `$ENV.variable_name` to read environment variables"
+        },
+        "db": {
+          "type": "string",
+          "description": "Redis DB, supports using `$ENV.variable_name` to read environment variables"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoConnector.Sqlite3Option": {
+      "type": "object",
+      "properties": {
+        "file": {
+          "type": "string",
+          "description": "Database file path, supports using `$ENV.variable_name` to read environment variables"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoConnector.MongoDBOption": {
+      "type": "object",
+      "properties": {
+        "db": {
+          "type": "string",
+          "description": "Database name, supports using `$ENV.variable_name` to read environment variables"
+        },
+        "timeout": {
+          "type": "boolean",
+          "description": "Connection timeout"
+        },
+        "hosts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoConnector.MongoHost"
+          },
+          "description": "List of servers"
+        },
+        "params": {
+          "type": "object",
+          "description": "Connection parameters"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoConnector.MongoHost": {
+      "type": "object",
+      "properties": {
+        "host": {
+          "type": "string",
+          "description": "MySQL Host, supports using `$ENV.variable_name` to read environment variables"
+        },
+        "port": {
+          "type": "string",
+          "description": "MySQL Port, supports using `$ENV.variable_name` to read environment variables"
+        },
+        "user": {
+          "type": "string",
+          "description": "MySQL User name, supports using `$ENV.variable_name` to read environment variables"
+        },
+        "pass": {
+          "type": "string",
+          "description": "MySQL Password, supports using `$ENV.variable_name` to read environment variables"
+        }
+      },
+      "additionalProperties": false,
+      "description": "List of servers"
+    },
+    "YaoConnector.OpenAIOption": {
+      "type": "object",
+      "properties": {
+        "proxy": {
+          "type": "string",
+          "description": "Proxy website for api.openai.com"
+        },
+        "model": {
+          "type": "string",
+          "description": "OpenAI model"
+        },
+        "key": {
+          "type": "string",
+          "description": "OpenAI API token key"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

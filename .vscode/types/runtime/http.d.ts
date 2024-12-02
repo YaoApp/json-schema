@@ -147,6 +147,106 @@ export interface HTTP {
   ): void;
 }
 
+export interface UploadFile {
+  /**
+   * Content-Uid: The unique identifier of the file (for chunk upload)
+   */
+  uid?: string;
+
+  /**
+   * Content-Range: bytes start-end/total (for chunk upload)
+   */
+  range?: string;
+
+  /**
+   * Content-Sync: sync upload or not. Default is false (for chunk upload)
+   */
+  sync?: boolean;
+
+  /**
+   * The name of the file
+   */
+  name: string;
+
+  /**
+   * The temporary file path
+   */
+  tempFile: string;
+
+  /**
+   * The size of the file
+   */
+  size: number;
+
+  /**
+   * The MIME type of the file
+   */
+  header: { [key: string]: string[] }; // Equivalent to textproto.MIMEHeader in Go
+
+  /**
+   * Error message
+   */
+  error?: string;
+}
+
+export interface UploadProgress {
+  /**
+   * Total bytes to upload
+   */
+  total: number;
+
+  /**
+   * Bytes uploaded
+   */
+  uploaded: number;
+
+  /**
+   * Upload is completed
+   */
+  completed: boolean;
+}
+
+/**
+ * Upload File Response
+ */
+export type UploadFileResponse =
+  | string
+  | {
+      /**
+       * File path or URL
+       */
+      path: string; // File path
+
+      /**
+       * Upload progress
+       */
+      progress?: UploadProgress;
+
+      /**
+       * Content-Uid: The unique identifier of the file (for chunk upload)
+       */
+      uid?: string;
+
+      /**
+       * additional information, can be used to previewURL, etc.
+       */
+      [key: string]: any;
+    };
+/**
+ * Http Exception
+ */
+export type HttpException = {
+  /**
+   * The error code.
+   */
+  code: number;
+
+  /**
+   * The error message.
+   */
+  message: string;
+};
+
 /**
  * Declaration of the HTTP object.
  */

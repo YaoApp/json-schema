@@ -1,0 +1,127 @@
+
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/YaoWebSocket.Client",
+  "definitions": {
+    "YaoWebSocket.Client": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "Version [Management Field]"
+        },
+        "decription": {
+          "type": "string",
+          "description": "Description [Management Field]"
+        },
+        "comment": {
+          "type": "string",
+          "description": "Comment [Management Field]"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description"
+        },
+        "url": {
+          "type": "string",
+          "description": "URL"
+        },
+        "protocols": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Protocols"
+        },
+        "guard": {
+          "type": "string"
+        },
+        "buffer": {
+          "$ref": "#/definitions/YaoWebSocket.BufferSize",
+          "description": "Buffer Settings"
+        },
+        "timeout": {
+          "type": "number",
+          "description": "Timeout setting (seconds), default is 5"
+        },
+        "ping": {
+          "type": "number",
+          "description": "Ping timeout (seconds), default is 2592000"
+        },
+        "keep": {
+          "type": "number",
+          "description": "-1 not keep alive, 0 always keep alive, keep alive for n seconds."
+        },
+        "attempt_after": {
+          "type": "number",
+          "description": "Retry connection after how many seconds, default is 50"
+        },
+        "attempts": {
+          "type": "number",
+          "description": "Maximum number of times to try to reconnect to the server when connection is broken (client mode only)"
+        },
+        "timestamp": {
+          "type": "number",
+          "description": "Timestamp"
+        },
+        "ip": {
+          "type": "string",
+          "description": "IP Address"
+        },
+        "port": {
+          "type": "number",
+          "description": "Port Number"
+        },
+        "event": {
+          "$ref": "#/definitions/YaoWebSocket.WebSocketEvent",
+          "description": "WebSocket Event Handling"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoWebSocket.BufferSize": {
+      "type": "object",
+      "properties": {
+        "read": {
+          "type": "number",
+          "description": "Buffer size for reading (bytes), default is 1024"
+        },
+        "write": {
+          "type": "number",
+          "description": "Buffer size for writing (bytes), default is 1024"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoWebSocket.WebSocketEvent": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "string",
+          "description": "Callback handler for WebSocket data"
+        },
+        "error": {
+          "type": "string",
+          "description": "Callback handler for WebSocket errors"
+        },
+        "closed": {
+          "type": "string",
+          "description": "Callback handler when WebSocket connection is closed"
+        },
+        "connected": {
+          "type": "string",
+          "description": "Callback handler after WebSocket connection is made"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Client Event Handlers"
+    }
+  }
+}

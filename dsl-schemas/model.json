@@ -1,0 +1,714 @@
+
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/YaoModel.ModelDSL",
+  "definitions": {
+    "YaoModel.ModelDSL": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "Version [Management field]"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description [Management field]"
+        },
+        "comment": {
+          "type": "string",
+          "description": "Remark [Management field]"
+        },
+        "label": {
+          "type": "string",
+          "description": "Label"
+        },
+        "name": {
+          "type": "string",
+          "description": "Model name"
+        },
+        "connector": {
+          "type": "string",
+          "description": "Data table definition"
+        },
+        "table": {
+          "$ref": "#/definitions/YaoModel.Table",
+          "description": "Data table options"
+        },
+        "columns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoModel.ModelColumn"
+          },
+          "description": "Field definitions"
+        },
+        "indexes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoModel.Index"
+          },
+          "description": "Index definitions"
+        },
+        "relations": {
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/YaoModel.Relation"
+              },
+              {
+                "not": {}
+              }
+            ]
+          },
+          "description": "Mapping relations definitions"
+        },
+        "values": {
+          "type": "array",
+          "items": {},
+          "description": "Default data"
+        },
+        "option": {
+          "$ref": "#/definitions/YaoModel.ModelOption",
+          "description": "Configuration options"
+        },
+        "custom": {
+          "type": "object",
+          "description": "Custom extensions"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Model metadata"
+    },
+    "YaoModel.Table": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "Display label"
+        },
+        "name": {
+          "type": "string",
+          "description": "Data table name, if not set it's generated from the model name. For example, name.space.user results in the table name name_space_user."
+        },
+        "prefix": {
+          "type": "string",
+          "description": "Table name prefix"
+        },
+        "comment": {
+          "type": "string",
+          "description": "Data table comment (Chinese name)"
+        },
+        "engine": {
+          "type": "string",
+          "description": "Data table engine (MySQL ONLY). Allowed values: `InnoDB`, `MyISAM`"
+        },
+        "collation": {
+          "type": "string",
+          "description": "(MySQL ONLY)"
+        },
+        "charset": {
+          "type": "string",
+          "description": "(MySQL ONLY)"
+        },
+        "primaryKeys": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Unknown"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoModel.ModelColumn": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "Field display name, used in management forms, development platforms, etc."
+        },
+        "name": {
+          "type": "string",
+          "description": "Field name, corresponding to the field name in the data table"
+        },
+        "type": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/YaoModel.ColumnFieldTypeEnum"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Field type"
+        },
+        "title": {
+          "type": "string",
+          "description": "Field title, can be used for display in development platforms"
+        },
+        "description": {
+          "type": "string",
+          "description": "Field description, can be used for display in development platforms"
+        },
+        "comment": {
+          "type": "string",
+          "description": "Field comment, corresponding to the field comment in the data table"
+        },
+        "length": {
+          "type": "number",
+          "description": "Field length, applicable to fields like `string` type"
+        },
+        "precision": {
+          "type": "number",
+          "description": "Field precision (including decimal places), applicable to fields like `float`, `decimal` type"
+        },
+        "scale": {
+          "type": "number",
+          "description": "Field scale, applicable to fields like `float`, `decimal` type"
+        },
+        "nullable": {
+          "type": "boolean",
+          "description": "Whether the field can be null, default is false"
+        },
+        "option": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoModel.ColumnOption"
+          },
+          "description": "Field allowed values, effective for `enum` type fields"
+        },
+        "default": {
+          "description": "string\\|number\\|float|Field default value"
+        },
+        "default_raw": {
+          "type": "string",
+          "description": "Field default value, supports database functions like `NOW()`. When both default and default_raw exist, default_raw takes precedence."
+        },
+        "example": {
+          "description": "Example, unused"
+        },
+        "generate": {
+          "type": "string",
+          "description": "Auto-generation types such as Increment, UUID,..."
+        },
+        "crypt": {
+          "type": "string",
+          "description": "Field encryption storage method. Allowed values: `AES(MySQL Only)`, `PASSWORD`"
+        },
+        "validations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoModel.Validation"
+          },
+          "description": "Field validation rules"
+        },
+        "index": {
+          "type": "boolean",
+          "description": "Whether the field is an index, default is false"
+        },
+        "unique": {
+          "type": "boolean",
+          "description": "Whether the field is a unique index, default is false. If true, there is no need to set `index` to true."
+        },
+        "primary": {
+          "type": "boolean",
+          "description": "Whether the field is a primary key. Each table can have at most one primary key field. Default is false"
+        },
+        "props": {
+          "type": "object",
+          "description": "Additional configuration properties"
+        }
+      },
+      "required": [
+        "label",
+        "name",
+        "type"
+      ],
+      "additionalProperties": false,
+      "description": "Field definition in the model"
+    },
+    "YaoModel.ColumnFieldTypeEnum": {
+      "type": "string",
+      "enum": [
+        "string",
+        "char",
+        "text",
+        "mediumText",
+        "longText",
+        "binary",
+        "date",
+        "datetime",
+        "datetimeTz",
+        "time",
+        "timeTz",
+        "timestamp",
+        "timestampTz",
+        "tinyInteger",
+        "tinyIncrements",
+        "unsignedTinyInteger",
+        "smallInteger",
+        "smallIncrements",
+        "unsignedSmallInteger",
+        "integer",
+        "increments",
+        "unsignedInteger",
+        "bigInteger",
+        "bigIncrements",
+        "unsignedBigInteger",
+        "id",
+        "ID",
+        "decimal",
+        "unsignedDecimal",
+        "float",
+        "unsignedFloat",
+        "double",
+        "unsignedDouble",
+        "boolean",
+        "enum",
+        "json",
+        "JSON",
+        "jsonb",
+        "JSONB",
+        "uuid",
+        "ipAddress",
+        "macAddress",
+        "year",
+        "vector"
+      ]
+    },
+    "YaoModel.ColumnOption": {
+      "type": [
+        "string",
+        "number",
+        "boolean"
+      ]
+    },
+    "YaoModel.Validation": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": [
+            "typeof",
+            "min",
+            "max",
+            "enum",
+            "pattern",
+            "minLength",
+            "maxLength",
+            "email",
+            "mobile"
+          ],
+          "description": "Validation method name. Allowed values: `typeof`, `pattern`, `min`,`max`,`enum`,`minLength`,`maxLength`,  `email`,`mobile`\n\ntypeof    | `[<string>]` Allowed values: `string`, `integer`, `float`, `number`, `datetime`, `timestamp`\n\nmin       | `[<number\\|float>]`\n\nmax       | `[<number\\|float>]`\n\nenum      | `[string...]`\n\npattern   | `[string]`\n\nminLength | `[<number>]`\n\nmaxLength | `[<number>]`\n\nemail     | `Email address format username@domain`\n\nmobile    | `[<string>]` Phone"
+        },
+        "args": {
+          "type": "array",
+          "items": {},
+          "description": "Validation method parameters, e.g., `[20]`, `[\"^1[3-9]\\\\d{9}$\"]`"
+        },
+        "message": {
+          "type": "string",
+          "description": "Error message returned if validation fails. Supports referencing field information using `{{<name>}}`, e.g., `{{label}}` will be replaced by the value defined in the field 'label'; `{{input}}` will be replaced by user input value."
+        }
+      },
+      "required": [
+        "method"
+      ],
+      "additionalProperties": false
+    },
+    "YaoModel.Index": {
+      "type": "object",
+      "properties": {
+        "comment": {
+          "type": "string",
+          "description": "Remark"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name"
+        },
+        "columns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Column names"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type: primary, unique, index, match"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoModel.Relation": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "Title"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "hasOne",
+            "hasMany",
+            "hasOneThrough"
+          ],
+          "description": "Relationship with the current data model. `hasOne` for one-to-one, `hasMany` for one-to-many."
+        },
+        "key": {
+          "type": "string",
+          "description": "**Related data model** field name, used for relational mapping (related data model.key = current data model.foreign)"
+        },
+        "model": {
+          "type": "string",
+          "description": "**Related data model** name"
+        },
+        "foreign": {
+          "type": "string",
+          "description": "**Current data model** field name, used for relational mapping (related data model.key = current data model.foreign)"
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoModel.Relation"
+          },
+          "description": "Links, unknown"
+        },
+        "query": {
+          "$ref": "#/definitions/YaoQuery.QueryDSL",
+          "description": "**Related data model** query conditions, can be overridden during queries. Example: `{ \"select\": [\"id\", \"name\"] }`"
+        }
+      },
+      "required": [
+        "type",
+        "key",
+        "model",
+        "foreign"
+      ],
+      "additionalProperties": false
+    },
+    "YaoQuery.QueryDSL": {
+      "type": "object",
+      "properties": {
+        "comment": {
+          "type": "string",
+          "description": "Remark [Management field]"
+        },
+        "select": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Fields list to select"
+        },
+        "from": {
+          "type": "string",
+          "description": "Data table name or data model for the query"
+        },
+        "wheres": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/YaoQuery.Where"
+              }
+            },
+            {
+              "$ref": "#/definitions/YaoQuery.Recordable"
+            }
+          ],
+          "description": "Data query conditions"
+        },
+        "orders": {
+          "$ref": "#/definitions/YaoQuery.Orders",
+          "description": "Order conditions"
+        },
+        "offset": {
+          "type": "number",
+          "description": "Start position of records"
+        },
+        "first": {
+          "type": "boolean",
+          "description": "Read only the first record"
+        },
+        "limit": {
+          "type": "number",
+          "description": "Number of records to read"
+        },
+        "page": {
+          "type": "number",
+          "description": "Current page number for paginated queries"
+        },
+        "pagesize": {
+          "type": "number",
+          "description": "Number of records per page"
+        },
+        "data-only": {
+          "type": "boolean",
+          "description": "If true, the query result is an array of records. If false, the result is paginated. Effective only when `page` or `pagesize` are set."
+        },
+        "groups": {
+          "$ref": "#/definitions/YaoQuery.Groups",
+          "description": "Aggregate fields and statistics hierarchy settings"
+        },
+        "havings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoQuery.Having"
+          },
+          "description": "Filter for aggregate query results, effective only when `groups` are set"
+        },
+        "unions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoQuery.QueryDSL"
+          },
+          "description": "Union queries. Multiple queries combine their results into one table."
+        },
+        "query": {
+          "$ref": "#/definitions/YaoQuery.QueryDSL",
+          "description": "Subquery. Describes query logic per QueryDSL, generating a two-dimensional data table or numerical value."
+        },
+        "name": {
+          "type": "string",
+          "description": "Subquery alias"
+        },
+        "joins": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoQuery.Join"
+          },
+          "description": "Table joins. Not recommended for tables with large data volumes."
+        },
+        "sql": {
+          "$ref": "#/definitions/YaoQuery.SQL",
+          "description": "SQL statement. **Do not use unless necessary**"
+        },
+        "debug": {
+          "type": "boolean",
+          "description": "Enable debugging (when enabled, it's logged in the query log)"
+        }
+      },
+      "additionalProperties": false,
+      "description": "QueryDSL Gou Query Domain Specific Language"
+    },
+    "YaoQuery.Where": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "type": "string",
+          "description": "Query field"
+        },
+        "value": {
+          "type": "string",
+          "description": "Matching value"
+        },
+        "op": {
+          "type": "string",
+          "description": "Matching relationship operator"
+        },
+        "or": {
+          "type": "string",
+          "description": "true if the query condition logical relation is or, default is false for and"
+        },
+        "query": {
+          "type": "string",
+          "description": "Subquery, if set, ignores the value."
+        },
+        "comment": {
+          "type": "string",
+          "description": "Query condition comment"
+        },
+        "wheres": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoQuery.Where"
+          },
+          "description": "Group query. Used for scenarios like condition 1 and ( condition 2 OR condition 3)"
+        }
+      },
+      "additionalProperties": {
+        "description": "You can use simplified operations, for example: { \":score\": \"Score\", \"in\": [10, 20] }"
+      },
+      "description": "Where query conditions"
+    },
+    "YaoQuery.Recordable": {
+      "type": "object"
+    },
+    "YaoQuery.Orders": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/YaoQuery.Order"
+      },
+      "description": "Orders sort conditions collection"
+    },
+    "YaoQuery.Order": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "type": "string",
+          "description": "Sort field"
+        },
+        "sort": {
+          "type": "string",
+          "description": "Sort method"
+        },
+        "comment": {
+          "type": "string",
+          "description": "Query condition comment"
+        }
+      },
+      "required": [
+        "field"
+      ],
+      "additionalProperties": false,
+      "description": "Order sort conditions"
+    },
+    "YaoQuery.Groups": {
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoQuery.Group"
+          }
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ],
+      "description": "Groups aggregate conditions collection"
+    },
+    "YaoQuery.Group": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "$ref": "#/definitions/YaoQuery.Expression",
+          "description": "Sort field"
+        },
+        "rollup": {
+          "type": "string",
+          "description": "Return multi-level statistics results, corresponding to the name of the aggregate field values."
+        },
+        "comment": {
+          "type": "string",
+          "description": "Query condition comment"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Group aggregate conditions"
+    },
+    "YaoQuery.Expression": {
+      "type": "string"
+    },
+    "YaoQuery.Having": {
+      "type": "object",
+      "properties": {
+        "havings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoQuery.Having"
+          },
+          "description": "Group query. Used for scenarios like condition 1 and ( condition 2 OR condition 3)"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Having aggregate result filtering conditions"
+    },
+    "YaoQuery.Join": {
+      "type": "object",
+      "properties": {
+        "from": {
+          "$ref": "#/definitions/YaoQuery.Table",
+          "description": "Data table name or data model for the query"
+        },
+        "key": {
+          "$ref": "#/definitions/YaoQuery.Expression",
+          "description": "Associated connection table field name"
+        },
+        "foreign": {
+          "$ref": "#/definitions/YaoQuery.Expression",
+          "description": "Associated target table field name (table or alias must be specified)"
+        },
+        "left": {
+          "type": "boolean",
+          "description": "true for LEFT JOIN method, default is false for JOIN"
+        },
+        "right": {
+          "type": "boolean",
+          "description": "true for RIGHT JOIN method, default is false for JOIN"
+        },
+        "comment": {
+          "type": "string",
+          "description": "Associated condition comment"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Join data table connection"
+    },
+    "YaoQuery.Table": {
+      "type": "string"
+    },
+    "YaoQuery.SQL": {
+      "type": "object",
+      "properties": {
+        "stmt": {
+          "type": "string",
+          "description": "SQL statement, not to be mixed with other SQL query conditions"
+        },
+        "args": {
+          "type": "array",
+          "items": {},
+          "description": "Bound parameter list"
+        },
+        "comment": {
+          "type": "string",
+          "description": "SQL statement comment"
+        }
+      },
+      "additionalProperties": false,
+      "description": "SQL statement"
+    },
+    "YaoModel.ModelOption": {
+      "type": "object",
+      "properties": {
+        "timestamps": {
+          "type": "boolean",
+          "description": "created_at, updated_at fields"
+        },
+        "soft_deletes": {
+          "type": "boolean",
+          "description": "deleted_at field"
+        },
+        "trackings": {
+          "type": "boolean",
+          "description": "created_by, updated_by, deleted_by fields"
+        },
+        "constraints": {
+          "type": "boolean",
+          "description": "Constraint definitions"
+        },
+        "permission": {
+          "type": "boolean",
+          "description": "__permission field"
+        },
+        "logging": {
+          "type": "boolean",
+          "description": "__logging_id field"
+        },
+        "read_only": {
+          "type": "boolean",
+          "description": "Ignore the migration operation"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

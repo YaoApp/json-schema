@@ -1,0 +1,84 @@
+
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/YaoService.Service",
+  "definitions": {
+    "YaoService.Service": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "Version [Management Field]"
+        },
+        "decription": {
+          "type": "string",
+          "description": "Description [Management Field]"
+        },
+        "comment": {
+          "type": "string",
+          "description": "Remarks [Management Field]"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name"
+        },
+        "process": {
+          "type": "string",
+          "description": "Processor, the execution directory is the environment variable YAO_ROOT, or use the current directory"
+        },
+        "command": {
+          "type": "string",
+          "description": "Job execution command, the default is `yao run`, use Yao to execute scripts, etc., can be replaced with other system commands"
+        },
+        "requires": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Prerequisite Jobs"
+        },
+        "after": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Prerequisite Jobs"
+        },
+        "restart": {
+          "type": "string",
+          "description": "Restart conditions, default is on-failure"
+        },
+        "workdir": {
+          "type": "string",
+          "description": "Working Directory"
+        },
+        "args": {
+          "type": "array",
+          "items": {},
+          "description": "Arguments for running the processor"
+        },
+        "error": {
+          "type": "string",
+          "description": "Error log file path, default /var/log/yao-{{.Name}}-error.log"
+        },
+        "output": {
+          "type": "string",
+          "description": "Output log file path, default /var/log/yao-{{.Name}}.log"
+        },
+        "user": {
+          "type": "string",
+          "description": "Execution User, default User=root"
+        },
+        "group": {
+          "type": "string",
+          "description": "Execution User Group, Group=root"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Background service definition, not supported on Windows operating systems"
+    }
+  }
+}

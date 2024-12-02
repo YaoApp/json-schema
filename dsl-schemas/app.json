@@ -1,0 +1,135 @@
+
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/YaoApp.AppDSL",
+  "definitions": {
+    "YaoApp.AppDSL": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "Version [Management Field]"
+        },
+        "decription": {
+          "type": "string",
+          "description": "Description [Management Field]"
+        },
+        "comment": {
+          "type": "string",
+          "description": "Comment [Management Field]"
+        },
+        "xgen": {
+          "type": "string",
+          "description": "XGen interface engine version, recommended to use version `1.0`, older versions are no longer maintained"
+        },
+        "name": {
+          "type": "string",
+          "description": "Application name, supports multiple languages"
+        },
+        "short": {
+          "type": "string",
+          "description": "Application abbreviation, supports multiple languages."
+        },
+        "description": {
+          "type": "string",
+          "description": "Application introduction, supports multiple languages."
+        },
+        "theme": {
+          "type": "string",
+          "enum": [
+            "light",
+            "dark"
+          ],
+          "description": "Default theme"
+        },
+        "lang": {
+          "type": "string",
+          "description": "Configure xgen language zh-cn/en-us"
+        },
+        "sid": {
+          "type": "string"
+        },
+        "logo": {
+          "type": "string",
+          "description": "Logo file address, root directory/public"
+        },
+        "favicon": {
+          "type": "string",
+          "description": "Website favicon file address, root directory/public"
+        },
+        "menu": {
+          "$ref": "#/definitions/YaoApp.MenuDSL",
+          "description": "Admin panel menu reader"
+        },
+        "adminRoot": {
+          "type": "string",
+          "description": "Admin panel route prefix, default is /yao"
+        },
+        "optional": {
+          "$ref": "#/definitions/YaoApp.OptionalDSL",
+          "description": "Optional configuration items for the application"
+        },
+        "setting": {
+          "type": "string",
+          "description": "Processor for obtaining xgen configurations, default is yao.app.Xgen"
+        },
+        "setup": {
+          "type": "string",
+          "description": "Processor name to run after the application is installed for the first time, usually used to set up initial data; the first argument to the processor is the application configuration information. Supports using the `studio` namespace to call studio script functions"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoApp.MenuDSL": {
+      "type": "object",
+      "properties": {
+        "process": {
+          "type": "string",
+          "description": "Processor name"
+        },
+        "args": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Processor arguments list"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoApp.OptionalDSL": {
+      "type": "object",
+      "properties": {
+        "hideNotification": {
+          "type": "boolean",
+          "description": "Hide system notification panel. **Field names are case-sensitive**"
+        },
+        "hideSetting": {
+          "type": "boolean",
+          "description": "Hide the configuration menu below the navigation bar. **Field names are case-sensitive**"
+        },
+        "remoteCache": {
+          "type": "boolean",
+          "description": "Cache remote select control options in xgen"
+        },
+        "neo": {
+          "type": "object",
+          "properties": {
+            "api": {
+              "type": "string",
+              "description": "neo chat API"
+            }
+          },
+          "required": [
+            "api"
+          ],
+          "additionalProperties": false,
+          "description": "neo config, for chatgpt service"
+        }
+      }
+    }
+  }
+}

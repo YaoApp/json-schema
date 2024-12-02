@@ -1,0 +1,51 @@
+
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/YaoCustomWidget.Widget",
+  "definitions": {
+    "YaoCustomWidget.Widget": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "Version [Management Field]"
+        },
+        "decription": {
+          "type": "string",
+          "description": "Description [Management Field]"
+        },
+        "comment": {
+          "type": "string",
+          "description": "Comment [Management Field]"
+        },
+        "label": {
+          "type": "string",
+          "description": "Widget Name"
+        },
+        "description": {
+          "type": "string",
+          "description": "Widget Introduction"
+        },
+        "root": {
+          "type": "string",
+          "description": "Path to DSL file (relative to the project's root directory)"
+        },
+        "extension": {
+          "type": "string",
+          "description": "DSL file extension"
+        },
+        "modules": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Modules to be exported. Transformed YAO built-in widgets based on DSL description in export.js, such as model, table, etc. These widgets are equivalent to DSL files stored in the project directory."
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

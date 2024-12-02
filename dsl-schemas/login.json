@@ -1,0 +1,110 @@
+
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/YaoLogin.LoginDSL",
+  "definitions": {
+    "YaoLogin.LoginDSL": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "Version [Management Field]"
+        },
+        "decription": {
+          "type": "string",
+          "description": "Description [Management Field]"
+        },
+        "comment": {
+          "type": "string",
+          "description": "Comment [Management Field]"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the login interface, supports multiple languages"
+        },
+        "action": {
+          "$ref": "#/definitions/YaoLogin.ActionDSL",
+          "description": "Custom user login logic handler, default is yao.login.Admin"
+        },
+        "layout": {
+          "$ref": "#/definitions/YaoLogin.LayoutDSL",
+          "description": "Page layout definition. Sets login screen cover, routing address to redirect after login, etc."
+        },
+        "thirdPartyLogin": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoLogin.ThirdPartyLoginDSL"
+          },
+          "description": "Third-party login"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoLogin.ActionDSL": {
+      "type": "object",
+      "properties": {
+        "process": {
+          "type": "string",
+          "description": "User login processing logic"
+        },
+        "args": {
+          "type": "array",
+          "items": {},
+          "description": "Login processor parameters, refer to HTTP interface for parameter passing, can use :payload to reference passed-in parameters"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoLogin.LayoutDSL": {
+      "type": "object",
+      "properties": {
+        "entry": {
+          "type": "string",
+          "description": "Redirect to this address after successful login. **Note: Excludes backend route prefix**"
+        },
+        "captcha": {
+          "type": "string",
+          "description": "Custom dynamic captcha generation handler, default is yao.utils.Captcha"
+        },
+        "cover": {
+          "type": "string",
+          "description": "Login screen cover image, relative image path. You can place the image in the application's public directory 'public', for example: '/data/app/public/images/cover.png', the address should be '/images/cover.png'"
+        },
+        "slogan": {
+          "type": "string",
+          "description": "Ad slogan for the login screen, supports multiple languages"
+        },
+        "site": {
+          "type": "string",
+          "description": "Link address below the login screen cover image"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoLogin.ThirdPartyLoginDSL": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Button title"
+        },
+        "href": {
+          "type": "string",
+          "description": "Third-party login redirect address"
+        },
+        "icon": {
+          "type": "string",
+          "description": "Prefix icon of the button"
+        },
+        "blank": {
+          "type": "boolean",
+          "description": "Whether to open a new tab in the browser"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

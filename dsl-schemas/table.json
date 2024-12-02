@@ -1,0 +1,1420 @@
+
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/YaoTable.TableDSL",
+  "definitions": {
+    "YaoTable.TableDSL": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "Version [Administrative Field]"
+        },
+        "decription": {
+          "type": "string",
+          "description": "Description [Administrative Field]"
+        },
+        "comment": {
+          "type": "string",
+          "description": "Remarks [Administrative Field]"
+        },
+        "id": {
+          "type": "string",
+          "description": "Unique Identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "Table Name, supports multiple languages"
+        },
+        "action": {
+          "$ref": "#/definitions/YaoTable.ActionDSL",
+          "description": "Table data interaction. Specifies the handlers for operations like list retrieval, saving, etc., sets data hooks, binds models, etc."
+        },
+        "layout": {
+          "$ref": "#/definitions/YaoTable.LayoutDSL",
+          "description": "Table interface layout. Display fields, filters, batch editing, etc."
+        },
+        "fields": {
+          "$ref": "#/definitions/YaoTable.FieldsDSL",
+          "description": "Definition of table fields. Specifies the columns and filter fields of the table"
+        },
+        "config": {
+          "$ref": "#/definitions/CommonConfig",
+          "description": "Table interface configuration. Configures full-screen display of the table, etc."
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "action"
+      ],
+      "additionalProperties": false
+    },
+    "YaoTable.ActionDSL": {
+      "type": "object",
+      "properties": {
+        "guard": {
+          "type": "string"
+        },
+        "bind": {
+          "$ref": "#/definitions/YaoTable.BindActionDSL",
+          "description": "Bind model or table. Sets table-associated handlers and interface rendering defaults according to linked Widget ID"
+        },
+        "setting": {
+          "$ref": "#/definitions/YaoAction.Process",
+          "description": "Associated handler. Returns table page configuration"
+        },
+        "component": {
+          "$ref": "#/definitions/YaoAction.Process"
+        },
+        "upload": {
+          "$ref": "#/definitions/YaoAction.Process"
+        },
+        "download": {
+          "$ref": "#/definitions/YaoAction.Process"
+        },
+        "search": {
+          "$ref": "#/definitions/YaoAction.Process",
+          "description": "Associated handler. Specifies data list search handler and default parameters, returns paginated info and an array of data records, default: models.Widget ID.Paginate"
+        },
+        "get": {
+          "$ref": "#/definitions/YaoAction.Process",
+          "description": "Associated handler. Specifies data list retrieval handler and default parameters, returns an array of data records"
+        },
+        "find": {
+          "$ref": "#/definitions/YaoAction.Process",
+          "description": "Associated handler. Specifies handler for querying a single data record by primary key and default parameters, returns a single data record"
+        },
+        "save": {
+          "$ref": "#/definitions/YaoAction.Process",
+          "description": "Associated handler. Specifies handler for saving a single data record"
+        },
+        "create": {
+          "$ref": "#/definitions/YaoAction.Process",
+          "description": "Associated handler. Specifies handler for creating a single data record"
+        },
+        "insert": {
+          "$ref": "#/definitions/YaoAction.Process",
+          "description": "Associated handler. Specifies handler for inserting multiple data records"
+        },
+        "delete": {
+          "$ref": "#/definitions/YaoAction.Process",
+          "description": "Associated handler. Specifies handler for deleting a single data record by primary key"
+        },
+        "delete-in": {
+          "$ref": "#/definitions/YaoAction.Process",
+          "description": "Associated handler. Specifies handler for deleting multiple data records by a set of primary keys"
+        },
+        "delete-where": {
+          "$ref": "#/definitions/YaoAction.Process",
+          "description": "Associated handler. Specifies handler for deleting multiple data records by query conditions"
+        },
+        "update": {
+          "$ref": "#/definitions/YaoAction.Process",
+          "description": "Associated handler. Specifies handler for updating a single data record by primary key"
+        },
+        "update-in": {
+          "$ref": "#/definitions/YaoAction.Process",
+          "description": "Associated handler. Specifies handler for updating multiple data records by a set of primary keys"
+        },
+        "update-where": {
+          "$ref": "#/definitions/YaoAction.Process",
+          "description": "Associated handler. Specifies handler for updating multiple data records by query conditions"
+        },
+        "before:find": {
+          "$ref": "#/definitions/YaoHook.Before",
+          "description": "Invoked before the Find handler|Passes data to the Find interface|Outputs result as input parameters for the Find associated handler|"
+        },
+        "after:find": {
+          "$ref": "#/definitions/YaoHook.After",
+          "description": "Invoked after the Find handler|Executes result of Find interface-associated handler|Custom (outputs result as final output of the Find handler)|"
+        },
+        "before:search": {
+          "$ref": "#/definitions/YaoHook.Before",
+          "description": "Invoked before the Search handler|Passes data to the Search interface|Outputs result as input parameters for the Search associated handler|"
+        },
+        "after:search": {
+          "$ref": "#/definitions/YaoHook.After",
+          "description": "Invoked after the Search handler|Executes result of Search interface-associated handler|Custom (outputs result as final output of the Search handler)|"
+        },
+        "before:get": {
+          "$ref": "#/definitions/YaoHook.Before",
+          "description": "Before Hook. Runs before the associated handler, inputs the parameter table entered by the user, returns the processed parameter table"
+        },
+        "after:get": {
+          "$ref": "#/definitions/YaoHook.After",
+          "description": "After Hook. Runs after the associated handler, inputs results returned by the associated handler, returns the processed results"
+        },
+        "before:save": {
+          "$ref": "#/definitions/YaoHook.Before",
+          "description": "Invoked before the Save handler|Passes data to the Save interface|Outputs result as input parameters for the Save associated handler|"
+        },
+        "after:save": {
+          "$ref": "#/definitions/YaoHook.After",
+          "description": "Invoked after the Save handler|Executes result of Save interface-associated handler|Custom (outputs result as final output of the Save interface)|"
+        },
+        "before:create": {
+          "$ref": "#/definitions/YaoHook.Before",
+          "description": "Before Hook. Runs before the associated handler, inputs the parameter table entered by the user, returns the processed parameter table"
+        },
+        "after:create": {
+          "$ref": "#/definitions/YaoHook.After",
+          "description": "After Hook. Runs after the associated handler, inputs results returned by the associated handler, returns the processed results"
+        },
+        "before:insert": {
+          "$ref": "#/definitions/YaoHook.Before",
+          "description": "Before Hook. Runs before the associated handler, inputs the parameter table entered by the user, returns the processed parameter table"
+        },
+        "after:insert": {
+          "$ref": "#/definitions/YaoHook.After",
+          "description": "After Hook. Runs after the associated handler, inputs results returned by the associated handler, returns the processed results"
+        },
+        "before:delete": {
+          "$ref": "#/definitions/YaoHook.Before",
+          "description": "Before Hook. Runs before the associated handler, inputs the parameter table entered by the user, returns the processed parameter table"
+        },
+        "after:delete": {
+          "$ref": "#/definitions/YaoHook.After",
+          "description": "After Hook. Runs after the associated handler, inputs results returned by the associated handler, returns the processed results"
+        },
+        "before:delete-in": {
+          "$ref": "#/definitions/YaoHook.Before",
+          "description": "Before Hook. Runs before the associated handler, inputs the parameter table entered by the user, returns the processed parameter table"
+        },
+        "after:delete-in": {
+          "$ref": "#/definitions/YaoHook.After",
+          "description": "After Hook. Runs after the associated handler, inputs results returned by the associated handler, returns the processed results"
+        },
+        "before:delete-where": {
+          "$ref": "#/definitions/YaoHook.Before",
+          "description": "Before Hook. Runs before the associated handler, inputs the parameter table entered by the user, returns the processed parameter table"
+        },
+        "after:delete-where": {
+          "$ref": "#/definitions/YaoHook.After",
+          "description": "After Hook. Runs after the associated handler, inputs results returned by the associated handler, returns the processed results"
+        },
+        "before:update": {
+          "$ref": "#/definitions/YaoHook.Before",
+          "description": "Before Hook. Runs before the associated handler, inputs the parameter table entered by the user, returns the processed parameter table"
+        },
+        "after:update": {
+          "$ref": "#/definitions/YaoHook.After",
+          "description": "After Hook. Runs after the associated handler, inputs results returned by the associated handler, returns the processed results"
+        },
+        "before:update-in": {
+          "$ref": "#/definitions/YaoHook.Before",
+          "description": "Before Hook. Runs before the associated handler, inputs the parameter table entered by the user, returns the processed parameter table"
+        },
+        "after:update-in": {
+          "$ref": "#/definitions/YaoHook.After",
+          "description": "After Hook. Runs after the associated handler, inputs results returned by the associated handler, returns the processed results"
+        },
+        "before:update-where": {
+          "$ref": "#/definitions/YaoHook.Before",
+          "description": "Before Hook. Runs before the associated handler, inputs the parameter table entered by the user, returns the processed parameter table"
+        },
+        "after:update-where": {
+          "$ref": "#/definitions/YaoHook.After",
+          "description": "After Hook. Runs after the associated handler, inputs results returned by the associated handler, returns the processed results"
+        }
+      },
+      "required": [
+        "bind"
+      ],
+      "additionalProperties": false
+    },
+    "YaoTable.BindActionDSL": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string",
+          "description": "Bind data model"
+        },
+        "store": {
+          "type": "string"
+        },
+        "table": {
+          "type": "string",
+          "description": "Bind table"
+        },
+        "form": {
+          "type": "string",
+          "description": "Bind form"
+        },
+        "option": {
+          "type": "object",
+          "properties": {
+            "form": {
+              "type": "string",
+              "description": "Form key for the table binding"
+            },
+            "withs": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/definitions/YaoQueryParam.QueryWith"
+              },
+              "description": "Definition of related tables"
+            }
+          },
+          "description": "Specifies the Form Widget ID for association, **effective when bind.model is not empty**"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoQueryParam.QueryWith": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "query": {
+          "$ref": "#/definitions/YaoQueryParam.QueryParam"
+        }
+      },
+      "additionalProperties": false,
+      "description": "With relations for associative queries"
+    },
+    "YaoQueryParam.QueryParam": {
+      "type": "object",
+      "properties": {
+        "comment": {
+          "type": "string",
+          "description": "Remarks [Administrative Field]"
+        },
+        "model": {
+          "type": "string",
+          "description": "Model Name"
+        },
+        "table": {
+          "type": "string",
+          "description": "Table Name"
+        },
+        "alias": {
+          "type": "string",
+          "description": "Alias"
+        },
+        "export": {
+          "type": "string",
+          "description": "Prefix for data export"
+        },
+        "select": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of selected fields"
+        },
+        "wheres": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoQueryParam.QueryWhere"
+          },
+          "description": "Query conditions"
+        },
+        "orders": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoQueryParam.QueryOrder"
+          },
+          "description": "Sorting conditions"
+        },
+        "limit": {
+          "type": "number",
+          "description": "Limit on the number of returned records"
+        },
+        "offset": {
+          "type": "number",
+          "description": "Offset"
+        },
+        "page": {
+          "type": "number",
+          "description": "Current page number"
+        },
+        "pagesize": {
+          "type": "number",
+          "description": "Number of records displayed per page"
+        },
+        "withs": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/YaoQueryParam.QueryWith"
+          },
+          "description": "Read associated models"
+        }
+      },
+      "additionalProperties": false,
+      "description": "QueryParam for data querying parameters"
+    },
+    "YaoQueryParam.QueryWhere": {
+      "type": "object",
+      "properties": {
+        "rel": {
+          "type": "string",
+          "description": "If querying by a field of a related model, fill in the name of the related model"
+        },
+        "column": {
+          "type": "string",
+          "description": "Field Name"
+        },
+        "value": {
+          "description": "Matching Value"
+        },
+        "method": {
+          "type": "string",
+          "description": "Query method `where`, `orwhere`, `wherein`, `orwherein`, etc. Default is `where`.\n\n| Query Method | Description                            | \n| ------------ | --------------------------------------- | \n| where        | WHERE field = value, WHERE field >= value |\n| orwhere      | ... OR WHERE field = value              |"
+        },
+        "op": {
+          "type": "string",
+          "enum": [
+            "eq",
+            "like",
+            "match",
+            "gt",
+            "ge",
+            "lt",
+            "le",
+            "null",
+            "notnull",
+            "in",
+            "ne"
+          ],
+          "description": "Matching operation `eq`, `like`, `in`, `gt`, etc. Default is `eq`\n\n| Matching Operation | Description                          | \n| ------------------ | -------------------------------------- | \n| eq                 | Default equals WHERE field = value    |\n| like               | Matches WHERE field like value       |\n| match              | Matches WHERE field full-text search value |\n| gt                 | Greater than WHERE field > value      |\n| ge                 | Greater or equal to WHERE field >= value |\n| lt                 | Less than WHERE field < value        |\n| le                 | Less or equal to WHERE field <= value |\n| null               | Null WHERE field IS NULL             |\n| notnull            | Not Null WHERE field IS NOT NULL     |\n| in                 | List includes WHERE field IN (values...) |\n| ne                 | Not equal to match value             |"
+        },
+        "wheres": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoQueryParam.QueryWhere"
+          },
+          "description": "Grouped queries"
+        }
+      },
+      "additionalProperties": false,
+      "description": "QueryWhere for Where query conditions"
+    },
+    "YaoQueryParam.QueryOrder": {
+      "type": "object",
+      "properties": {
+        "rel": {
+          "type": "string",
+          "description": "If sorting by a field of a related model, fill in the name of the related model"
+        },
+        "column": {
+          "type": "string",
+          "description": "Field Name"
+        },
+        "option": {
+          "type": "string",
+          "enum": [
+            "desc",
+            "asc"
+          ],
+          "description": "Sorting method, `desc`, `asc`, default is `asc`"
+        }
+      },
+      "required": [
+        "column"
+      ],
+      "additionalProperties": false,
+      "description": "QueryOrder for Order query sorting"
+    },
+    "YaoAction.Process": {
+      "type": "object",
+      "properties": {
+        "comment": {
+          "type": "string",
+          "description": "Remarks [Administrative Field]"
+        },
+        "process": {
+          "type": "string",
+          "description": "Associated handler name"
+        },
+        "bind": {
+          "type": "string",
+          "description": "Default framework-associated handler name, used if process is not specified"
+        },
+        "guard": {
+          "type": "string",
+          "description": "Authentication method, multiple methods can be used, separated by commas"
+        },
+        "default": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ActionDefault"
+          },
+          "description": "Default values for associated handler, null indicates no default value is set"
+        },
+        "disable": {
+          "type": "boolean",
+          "description": "Not used"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Custom handler for association"
+    },
+    "ActionDefault": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/YaoQueryParam.QueryParam"
+        },
+        {}
+      ]
+    },
+    "YaoHook.Before": {
+      "type": "string"
+    },
+    "YaoHook.After": {
+      "type": "string"
+    },
+    "YaoTable.LayoutDSL": {
+      "type": "object",
+      "properties": {
+        "primary": {
+          "type": "string",
+          "description": "Primary key of the data, default id"
+        },
+        "header": {
+          "$ref": "#/definitions/YaoTable.HeaderLayoutDSL",
+          "description": "Table interface header layout. Configures batch operations, import options, etc."
+        },
+        "filter": {
+          "$ref": "#/definitions/YaoTable.FilterLayoutDSL",
+          "description": "Table filter. Configures filter conditions and top-right operation buttons, etc."
+        },
+        "table": {
+          "$ref": "#/definitions/YaoTable.ViewLayoutDSL",
+          "description": "Table layout. Configures display columns, row operation buttons, etc."
+        }
+      },
+      "required": [
+        "header"
+      ],
+      "additionalProperties": false
+    },
+    "YaoTable.HeaderLayoutDSL": {
+      "type": "object",
+      "properties": {
+        "preset": {
+          "$ref": "#/definitions/YaoTable.PresetHeaderDSL",
+          "description": "Batch operations, import settings, etc."
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoComponent.ActionDSL"
+          },
+          "description": "Custom operation buttons, use filter.actions"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoTable.PresetHeaderDSL": {
+      "type": "object",
+      "properties": {
+        "batch": {
+          "$ref": "#/definitions/YaoTable.BatchPresetDSL",
+          "description": "Batch operations"
+        },
+        "import": {
+          "$ref": "#/definitions/YaoTable.ImportPresetDSL",
+          "description": "Data import"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoTable.BatchPresetDSL": {
+      "type": "object",
+      "properties": {
+        "columns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoComponent.LayoutColumnDSL"
+          },
+          "description": "Columns to display"
+        },
+        "deletable": {
+          "type": "boolean",
+          "description": "Can be deleted"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Batch data processing"
+    },
+    "YaoComponent.LayoutColumnDSL": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Field alias label"
+        },
+        "width": {
+          "description": "Width"
+        },
+        "height": {
+          "description": "Height"
+        },
+        "fixed": {
+          "type": "boolean",
+          "description": "Fixed"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoTable.ImportPresetDSL": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name"
+        },
+        "actions": {
+          "$ref": "#/definitions/YaoComponent.Actions",
+          "description": "Operations"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoComponent.Actions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/YaoComponent.ActionDSL"
+      }
+    },
+    "YaoComponent.ActionDSL": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique Identifier"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title"
+        },
+        "width": {
+          "type": "number",
+          "description": "Width"
+        },
+        "icon": {
+          "type": "string",
+          "description": "Icon"
+        },
+        "style": {
+          "type": "string",
+          "description": "Style"
+        },
+        "xpath": {
+          "type": "string"
+        },
+        "divideLine": {
+          "type": "boolean",
+          "description": "Divider"
+        },
+        "hide": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Syntactic sugar [\"add\", \"edit\", \"view\"]"
+        },
+        "showWhenAdd": {
+          "type": "boolean",
+          "description": "Show when adding data"
+        },
+        "showWhenView": {
+          "type": "boolean",
+          "description": "Show when viewing data"
+        },
+        "hideWhenEdit": {
+          "type": "boolean",
+          "description": "Hide when editing"
+        },
+        "props": {
+          "$ref": "#/definitions/YaoComponent.PropsDSL",
+          "description": "Attributes"
+        },
+        "confirm": {
+          "$ref": "#/definitions/YaoComponent.ConfirmActionDSL",
+          "description": "Confirmation prompt"
+        },
+        "action": {
+          "$ref": "#/definitions/YaoComponent.ActionNodes",
+          "description": "User Actions"
+        },
+        "disabled": {
+          "$ref": "#/definitions/YaoComponent.DisabledDSL",
+          "description": "Disabled when conditions are met"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Customizable actions"
+    },
+    "YaoComponent.PropsDSL": {
+      "type": "object"
+    },
+    "YaoComponent.ConfirmActionDSL": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Title"
+        },
+        "desc": {
+          "type": "string",
+          "description": "Description"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoComponent.ActionNodes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/YaoComponent.ActionNode"
+      }
+    },
+    "YaoComponent.ActionNode": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Action Name"
+        },
+        "type": {
+          "type": "string",
+          "description": "Action Type"
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "model": {
+              "type": "string",
+              "description": "Associated Model"
+            },
+            "Form": {
+              "$ref": "#/definitions/YaoComponent.PropsDSL",
+              "description": "Associated Form"
+            }
+          },
+          "description": "Information carried by the action"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoComponent.DisabledDSL": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "type": "string",
+          "description": "Bound field"
+        },
+        "bind": {
+          "type": "string",
+          "description": "Bound field"
+        },
+        "eq": {
+          "description": "string | array<string>  Syntactic sugar eq -> value"
+        },
+        "equal": {
+          "description": "string | array<string>  Syntactic sugar equal -> value"
+        },
+        "value": {
+          "description": "string | array<string>"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoTable.FilterLayoutDSL": {
+      "type": "object",
+      "properties": {
+        "actions": {
+          "$ref": "#/definitions/YaoComponent.Actions",
+          "description": "Custom operation buttons (top-right of the interface)"
+        },
+        "columns": {
+          "$ref": "#/definitions/YaoComponent.LayoutColumns",
+          "description": "Filter conditions, fields defined in fields.filter"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoComponent.LayoutColumns": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/YaoComponent.LayoutColumnDSL"
+      }
+    },
+    "YaoTable.ViewLayoutDSL": {
+      "type": "object",
+      "properties": {
+        "props": {
+          "$ref": "#/definitions/YaoComponent.PropsDSL",
+          "description": "Attribute configuration"
+        },
+        "columns": {
+          "$ref": "#/definitions/YaoComponent.LayoutColumns",
+          "description": "Definition of table columns"
+        },
+        "operation": {
+          "$ref": "#/definitions/YaoTable.OperationTableDSL",
+          "description": "Definition of table row operation area, buttons on the right, view, edit, delete, etc."
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoTable.OperationTableDSL": {
+      "type": "object",
+      "properties": {
+        "width": {
+          "type": "number",
+          "description": "Row operation area width (in pixels)"
+        },
+        "fold": {
+          "type": "boolean",
+          "description": "Whether to collapse the row operation area"
+        },
+        "hide": {
+          "type": "boolean",
+          "description": "Whether to hide the row operation area"
+        },
+        "actions": {
+          "$ref": "#/definitions/YaoComponent.Actions",
+          "description": "Custom row operation buttons"
+        }
+      },
+      "required": [
+        "actions"
+      ],
+      "additionalProperties": false,
+      "description": "Table layout. Configures display columns, row operation buttons, etc."
+    },
+    "YaoTable.FieldsDSL": {
+      "type": "object",
+      "properties": {
+        "filter": {
+          "$ref": "#/definitions/YaoField.Filters",
+          "description": "Definition of table filter fields"
+        },
+        "table": {
+          "$ref": "#/definitions/YaoField.Columns",
+          "description": "Definition of table column fields"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Definition of table fields. Specifies table column fields, table filter field definitions"
+    },
+    "YaoField.Filters": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/YaoField.FilterDSL"
+      }
+    },
+    "YaoField.FilterDSL": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique Identifier"
+        },
+        "key": {
+          "type": "string"
+        },
+        "bind": {
+          "type": "string",
+          "description": "Bound field column identifier"
+        },
+        "edit": {
+          "$ref": "#/definitions/YaoComponent.EditComponentDSL",
+          "description": "Associated edit control"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoComponent.EditComponentDSL": {
+      "type": "object",
+      "properties": {
+        "bind": {
+          "type": "string",
+          "description": "Bound field name, if not specified, the default value is used"
+        },
+        "type": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/YaoComponent.EditComponentEnum"
+            },
+            {
+              "type": "string",
+              "const": "public/xxx"
+            }
+          ],
+          "description": "Component name, available components see documentation at https://yaoapps.com/components, public/ is for remote components"
+        },
+        "compute": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/YaoComponent.Compute"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Data value calculation"
+        },
+        "props": {
+          "type": "object",
+          "properties": {
+            "xProps": {
+              "type": "object",
+              "properties": {
+                "$search": {
+                  "type": "object",
+                  "properties": {
+                    "process": {
+                      "type": "string",
+                      "description": "Handler"
+                    },
+                    "query": {
+                      "type": "object",
+                      "description": "Request parameter binding, can use {{}} to bind the record structure"
+                    }
+                  },
+                  "required": [
+                    "process"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Control search callback API"
+                },
+                "$remote": {
+                  "type": "object",
+                  "properties": {
+                    "process": {
+                      "type": "string",
+                      "description": "Handler"
+                    },
+                    "query": {
+                      "type": "object",
+                      "description": "Request parameter binding, can use {{}} to bind the record structure"
+                    }
+                  },
+                  "required": [
+                    "process"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            },
+            "$on:change": {
+              "type": "object",
+              "properties": {
+                "process": {
+                  "type": "string",
+                  "description": "Handler"
+                },
+                "query": {
+                  "type": "object",
+                  "description": "Request parameter binding, can use {{}} to bind the record structure"
+                }
+              },
+              "required": [
+                "process"
+              ],
+              "additionalProperties": false,
+              "description": "OnChange event"
+            },
+            "itemProps": {
+              "type": "object",
+              "properties": {
+                "rules": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/RuleObject"
+                  },
+                  "description": "Control rules"
+                },
+                "tooltip": {
+                  "type": "string",
+                  "description": "Tooltip"
+                },
+                "initialValue": {
+                  "description": "Default value"
+                }
+              },
+              "description": "Form item configuration"
+            }
+          },
+          "description": "Control attributes, can refer to antd controls"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoComponent.EditComponentEnum": {
+      "anyOf": [
+        {
+          "type": "string",
+          "const": "Cascader"
+        },
+        {
+          "type": "string",
+          "const": "CheckboxGroup"
+        },
+        {
+          "type": "string",
+          "const": "CodeEditor"
+        },
+        {
+          "type": "string",
+          "const": "ColorPicker"
+        },
+        {
+          "type": "string",
+          "const": "DatePicker"
+        },
+        {
+          "type": "string",
+          "const": "Grant"
+        },
+        {
+          "type": "string",
+          "const": "Input"
+        },
+        {
+          "type": "string",
+          "const": "InputNumber"
+        },
+        {
+          "type": "string",
+          "const": "List"
+        },
+        {
+          "type": "string",
+          "const": "Mentions"
+        },
+        {
+          "type": "string",
+          "const": "Password"
+        },
+        {
+          "type": "string",
+          "const": "RadioGroup"
+        },
+        {
+          "type": "string",
+          "const": "RangePicker"
+        },
+        {
+          "type": "string",
+          "const": "RichText"
+        },
+        {
+          "type": "string",
+          "const": "Select"
+        },
+        {
+          "type": "string",
+          "const": "Table"
+        },
+        {
+          "type": "string",
+          "const": "TextArea"
+        },
+        {
+          "type": "string",
+          "const": "TimePicker"
+        },
+        {
+          "type": "string",
+          "const": "Tree"
+        },
+        {
+          "type": "string",
+          "const": "Upload"
+        },
+        {
+          "$ref": "#/definitions/YaoComponent.CustomComponent"
+        }
+      ]
+    },
+    "YaoComponent.CustomComponent": {
+      "type": "string"
+    },
+    "YaoComponent.Compute": {
+      "type": "object",
+      "properties": {
+        "process": {
+          "type": "string",
+          "description": "If compute type is a string, it will automatically convert to handler name and pass four parameters to the handler, the first parameter being the field's value."
+        },
+        "args": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/YaoComponent.CArg"
+              }
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ],
+          "description": "Uses expressions to reference the structure of input data, default argument table: [\"$C(value)\", \"$C(props)\", \"$C(type)\", \"$C(id)\"]"
+        }
+      },
+      "required": [
+        "process"
+      ],
+      "additionalProperties": false,
+      "description": "Data value calculation Argument table:   $C(row) Current row data,   $C(value) Current row current field value,   $C(props) Current component props,   $C(type) Current component type,   $C(id) Current Widget ID   'hello' String constant   1024 Integer constant   0.618 Float constant"
+    },
+    "YaoComponent.CArg": {
+      "type": "object",
+      "properties": {
+        "isExp": {
+          "type": "boolean",
+          "description": "Is expression, if yes, will use key to bind and reference structure"
+        },
+        "key": {
+          "type": "string",
+          "description": "Effective when isExp=true, uses key to reference field names in model structure"
+        },
+        "value": {
+          "description": "Effective when isExp=false, can be any object. If it's a string, :: can be used as a prefix to format output"
+        }
+      },
+      "required": [
+        "isExp",
+        "key",
+        "value"
+      ],
+      "additionalProperties": false,
+      "description": "Custom argument table for compute handler"
+    },
+    "RuleObject": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/AggregationRule"
+        },
+        {
+          "$ref": "#/definitions/ArrayRule"
+        }
+      ]
+    },
+    "AggregationRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "warningOnly": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        },
+        "enum": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StoreValue"
+          }
+        },
+        "len": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        },
+        "min": {
+          "type": "number"
+        },
+        "pattern": {
+          "type": "string",
+          "format": "regex"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "type": {
+          "$ref": "#/definitions/RuleType"
+        },
+        "whitespace": {
+          "type": "boolean"
+        },
+        "validateTrigger": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ],
+          "description": "Customize rule level `validateTrigger`. Must be subset of Field `validateTrigger`"
+        }
+      }
+    },
+    "StoreValue": {},
+    "RuleType": {
+      "type": "string",
+      "enum": [
+        "string",
+        "number",
+        "boolean",
+        "method",
+        "regexp",
+        "integer",
+        "float",
+        "object",
+        "enum",
+        "date",
+        "url",
+        "hex",
+        "email"
+      ]
+    },
+    "ArrayRule": {
+      "type": "object",
+      "properties": {
+        "warningOnly": {
+          "type": "boolean"
+        },
+        "enum": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StoreValue"
+          }
+        },
+        "len": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        },
+        "message": {
+          "type": "string"
+        },
+        "min": {
+          "type": "number"
+        },
+        "pattern": {
+          "type": "string",
+          "format": "regex"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "whitespace": {
+          "type": "boolean"
+        },
+        "validateTrigger": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ],
+          "description": "Customize rule level `validateTrigger`. Must be subset of Field `validateTrigger`"
+        },
+        "type": {
+          "type": "string",
+          "const": "array"
+        },
+        "defaultField": {
+          "$ref": "#/definitions/RuleObject"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "YaoField.Columns": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/YaoField.ColumnDSL"
+      }
+    },
+    "YaoField.ColumnDSL": {
+      "type": "object",
+      "properties": {
+        "comment": {
+          "type": "string",
+          "description": "Remarks [Administrative Field]"
+        },
+        "id": {
+          "type": "string",
+          "description": "Unique Identifier"
+        },
+        "$data": {
+          "$ref": "#/definitions/YaoComponent.CloudPropsDSL",
+          "description": "Remote data interface"
+        },
+        "key": {
+          "type": "string",
+          "description": "Column primary key name, no need to set explicitly"
+        },
+        "bind": {
+          "type": "string",
+          "description": "Default name of the field in the API response to bind"
+        },
+        "link": {
+          "type": "string",
+          "description": "Chart link address, used only for charts"
+        },
+        "view": {
+          "$ref": "#/definitions/YaoComponent.ViewComponentDSL",
+          "description": "Display control settings"
+        },
+        "edit": {
+          "$ref": "#/definitions/YaoComponent.EditComponentDSL",
+          "description": "Edit control settings"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoComponent.CloudPropsDSL": {
+      "type": "object",
+      "properties": {
+        "xpath": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name"
+        },
+        "process": {
+          "type": "string",
+          "description": "Handler"
+        },
+        "query": {
+          "type": "object",
+          "description": "Handler parameters"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoComponent.ViewComponentDSL": {
+      "type": "object",
+      "properties": {
+        "bind": {
+          "type": "string",
+          "description": "Bound field name, if not specified, the default value is used"
+        },
+        "type": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/YaoComponent.ViewComponentEnum"
+            },
+            {
+              "type": "string",
+              "const": "public/xxx"
+            }
+          ],
+          "description": "Component name, available components see documentation at https://yaoapps.com/components, public/ is for remote components"
+        },
+        "compute": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/YaoComponent.Compute"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Data value calculation"
+        },
+        "props": {
+          "type": "object",
+          "properties": {
+            "xProps": {
+              "type": "object",
+              "properties": {
+                "$remote": {
+                  "type": "object",
+                  "properties": {
+                    "process": {
+                      "type": "string",
+                      "description": "Handler"
+                    },
+                    "query": {
+                      "type": "object",
+                      "description": "Request parameter binding, can use {{}} to bind the record structure"
+                    }
+                  },
+                  "required": [
+                    "process"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "description": "Control attributes, can refer to antd controls"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoComponent.ViewComponentEnum": {
+      "anyOf": [
+        {
+          "type": "string",
+          "const": "A"
+        },
+        {
+          "type": "string",
+          "const": "Checkbox"
+        },
+        {
+          "type": "string",
+          "const": "Color"
+        },
+        {
+          "type": "string",
+          "const": "Image"
+        },
+        {
+          "type": "string",
+          "const": "Switch"
+        },
+        {
+          "type": "string",
+          "const": "Tag"
+        },
+        {
+          "type": "string",
+          "const": "Text"
+        },
+        {
+          "type": "string",
+          "const": "Tooltip"
+        },
+        {
+          "$ref": "#/definitions/YaoComponent.CustomComponent"
+        }
+      ]
+    },
+    "CommonConfig": {
+      "type": "object",
+      "properties": {
+        "full": {
+          "type": "boolean",
+          "description": "Display table in full screen"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

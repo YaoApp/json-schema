@@ -1,0 +1,124 @@
+
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/YaoHttp.HttpDSL",
+  "definitions": {
+    "YaoHttp.HttpDSL": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "Version [Management Field]"
+        },
+        "decription": {
+          "type": "string",
+          "description": "Description [Management Field]"
+        },
+        "comment": {
+          "type": "string",
+          "description": "Comment [Management Field]"
+        },
+        "name": {
+          "type": "string",
+          "description": "API Display Name"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description"
+        },
+        "group": {
+          "type": "string",
+          "description": "API Group Name, used as the route prefix directory during access. `/api/<group>/<path>`"
+        },
+        "guard": {
+          "type": "string",
+          "description": "API global middleware, separated by commas if multiple. Unless specifically stated, all APIs within the group will use the global middleware.\n\nCommonly used bearer-jwt"
+        },
+        "paths": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoHttp.Path"
+          },
+          "description": "List of APIs. See `Object Path` data structure for more details"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoHttp.Path": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "Label"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description"
+        },
+        "path": {
+          "type": "string",
+          "description": "API Route Name. The full route address is `/api/<group>/<path>`, and variables are declared with `:`, such as `/api/user/find/:id`. You can access route request parameters using `$param.id`."
+        },
+        "method": {
+          "type": "string",
+          "description": "Request Type. Permissible values `GET`, `POST`, `PUT`, `DELETE`, `HEAD`, `OPTIONS`, `Any`. The `Any` option will respond to any request type."
+        },
+        "process": {
+          "type": "string",
+          "description": "Processor to invoke `process`"
+        },
+        "guard": {
+          "type": "string",
+          "description": "API middleware. If not set, the global middleware is used by default. To omit global middleware, set the value to `-`.\n\nCommonly used bearer-jwt"
+        },
+        "in": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Request parameter list, which will be used as input parameters (`args`) for `process`. You can reference incoming parameters, and it can be an empty array. [See Input Parameters](#input-parameters)"
+        },
+        "out": {
+          "$ref": "#/definitions/YaoHttp.Out",
+          "description": "Request response result definition. See `Object Out` data structure for more details"
+        }
+      },
+      "required": [
+        "path",
+        "method",
+        "process"
+      ],
+      "additionalProperties": false
+    },
+    "YaoHttp.Out": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "number",
+          "description": "Request Response Status Code"
+        },
+        "type": {
+          "type": "string",
+          "description": "Request Response Content Type"
+        },
+        "body": {
+          "description": "Request Response Content"
+        },
+        "headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Request Response Headers"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,163 @@
+
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/YaoQueryParam.QueryParam",
+  "definitions": {
+    "YaoQueryParam.QueryParam": {
+      "type": "object",
+      "properties": {
+        "comment": {
+          "type": "string",
+          "description": "Remark [management field]"
+        },
+        "model": {
+          "type": "string",
+          "description": "Model name"
+        },
+        "table": {
+          "type": "string",
+          "description": "Table name"
+        },
+        "alias": {
+          "type": "string",
+          "description": "Alias"
+        },
+        "export": {
+          "type": "string",
+          "description": "Prefix when exporting data"
+        },
+        "select": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of fields to select"
+        },
+        "wheres": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoQueryParam.QueryWhere"
+          },
+          "description": "Query conditions"
+        },
+        "orders": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoQueryParam.QueryOrder"
+          },
+          "description": "Sorting conditions"
+        },
+        "limit": {
+          "type": "number",
+          "description": "Limits the number of returned records"
+        },
+        "offset": {
+          "type": "number",
+          "description": "Offset"
+        },
+        "page": {
+          "type": "number",
+          "description": "Current page number"
+        },
+        "pagesize": {
+          "type": "number",
+          "description": "Number of records displayed per page"
+        },
+        "withs": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/YaoQueryParam.QueryWith"
+          },
+          "description": "Load related models"
+        }
+      },
+      "additionalProperties": false,
+      "description": "QueryParam Data query parameters"
+    },
+    "YaoQueryParam.QueryWhere": {
+      "type": "object",
+      "properties": {
+        "rel": {
+          "type": "string",
+          "description": "If querying by fields of associated models, fill in the associated model name"
+        },
+        "column": {
+          "type": "string",
+          "description": "Field name"
+        },
+        "value": {
+          "description": "Value for matching"
+        },
+        "method": {
+          "type": "string",
+          "description": "Query method: `where`, `orwhere`, `wherein`, `orwherein`, etc. Default is `where`.\n\n| Query Method | Description                               |\n| ------------ | ----------------------------------------- |\n| where        | WHERE field = value, WHERE field >= value |\n| orwhere      | ... OR WHERE field = value                |"
+        },
+        "op": {
+          "type": "string",
+          "enum": [
+            "eq",
+            "like",
+            "match",
+            "gt",
+            "ge",
+            "lt",
+            "le",
+            "null",
+            "notnull",
+            "in",
+            "ne"
+          ],
+          "description": "Matching relationship: `eq`, `like`, `in`, `gt`, etc., default is `eq`.\n\n| Matching Relationship | Description                        |\n| --------------------- | ---------------------------------- |\n| eq                    | Default equality WHERE field = value |\n| like                  | Match WHERE field LIKE value        |\n| match                 | Full-text search WHERE field matches value |\n| gt                    | Greater than WHERE field > value    |\n| ge                    | Greater than or equal WHERE field >= value |\n| lt                    | Less than WHERE field < value       |\n| le                    | Less than or equal WHERE field <= value |\n|                  | IS NULL WHERE field IS NULL         |\n| notnull | IS NOT NULL WHERE field IS NOT NULL |\n| in                    | List contains WHERE field IN (values...) |\n| ne                    | Not equal value                     |"
+        },
+        "wheres": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoQueryParam.QueryWhere"
+          },
+          "description": "Grouped query"
+        }
+      },
+      "additionalProperties": false,
+      "description": "QueryWhere 'Where' query conditions"
+    },
+    "YaoQueryParam.QueryOrder": {
+      "type": "object",
+      "properties": {
+        "rel": {
+          "type": "string",
+          "description": "If sorting by fields of associated models, fill in the associated model name"
+        },
+        "column": {
+          "type": "string",
+          "description": "Field name"
+        },
+        "option": {
+          "type": "string",
+          "enum": [
+            "desc",
+            "asc"
+          ],
+          "description": "Sorting order: `desc` or `asc`, default is `asc`"
+        }
+      },
+      "required": [
+        "column"
+      ],
+      "additionalProperties": false,
+      "description": "QueryOrder Sorting query"
+    },
+    "YaoQueryParam.QueryWith": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "query": {
+          "$ref": "#/definitions/YaoQueryParam.QueryParam"
+        }
+      },
+      "additionalProperties": false,
+      "description": "With relations associated query"
+    }
+  }
+}

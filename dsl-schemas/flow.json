@@ -1,0 +1,373 @@
+
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/YaoFlow.Flow",
+  "definitions": {
+    "YaoFlow.Flow": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string",
+          "description": "Data flow display name, used for presentation on development platforms"
+        },
+        "version": {
+          "type": "string",
+          "description": "Version number, used for dependency validation and presentation on development platforms"
+        },
+        "description": {
+          "type": "string",
+          "description": "Data flow introduction, used for presentation on development platforms"
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoFlow.FlowNode"
+          },
+          "description": "Query nodes"
+        },
+        "output": {
+          "description": "Definition of output results"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoFlow.FlowNode": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "Version [Management Field]"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description [Management Field]"
+        },
+        "comment": {
+          "type": "string",
+          "description": "Remarks [Management Field]"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the query node"
+        },
+        "process": {
+          "type": "string",
+          "description": "Call processor `process`"
+        },
+        "engine": {
+          "type": "string",
+          "description": "Data analysis engine name, default is `xiang`"
+        },
+        "query": {
+          "$ref": "#/definitions/YaoQuery.QueryDSL",
+          "description": "Data analysis language"
+        },
+        "script": {
+          "type": "string",
+          "description": "Associated script name"
+        },
+        "args": {
+          "type": "array",
+          "items": {},
+          "description": "List of processor parameters. Can reference input, output, or context data"
+        },
+        "outs": {
+          "type": "array",
+          "items": {},
+          "description": "Result output of the query node. Use `{{$out}}` to reference processor return results. If not set, the return value equals the processor return result."
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoQuery.QueryDSL": {
+      "type": "object",
+      "properties": {
+        "comment": {
+          "type": "string",
+          "description": "Remarks [Management Field]"
+        },
+        "select": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of selected fields"
+        },
+        "from": {
+          "type": "string",
+          "description": "Name of the queried data table or data model"
+        },
+        "wheres": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/YaoQuery.Where"
+              }
+            },
+            {
+              "$ref": "#/definitions/YaoQuery.Recordable"
+            }
+          ],
+          "description": "Data query conditions"
+        },
+        "orders": {
+          "$ref": "#/definitions/YaoQuery.Orders",
+          "description": "Ordering conditions"
+        },
+        "offset": {
+          "type": "number",
+          "description": "Starting position of records"
+        },
+        "first": {
+          "type": "boolean",
+          "description": "Only read the first record"
+        },
+        "limit": {
+          "type": "number",
+          "description": "Number of records to read"
+        },
+        "page": {
+          "type": "number",
+          "description": "Page number for paginated queries"
+        },
+        "pagesize": {
+          "type": "number",
+          "description": "Number of records to read per page"
+        },
+        "data-only": {
+          "type": "boolean",
+          "description": "Set to true for []Record in query results; false for Paginate, effective only when `page` or `pagesize` is set."
+        },
+        "groups": {
+          "$ref": "#/definitions/YaoQuery.Groups",
+          "description": "Aggregation fields and hierarchy settings"
+        },
+        "havings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoQuery.Having"
+          },
+          "description": "Filters for aggregate query results, effective only when `groups` is set"
+        },
+        "unions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoQuery.QueryDSL"
+          },
+          "description": "Union queries. Multiple queries are combined into one table"
+        },
+        "query": {
+          "$ref": "#/definitions/YaoQuery.QueryDSL",
+          "description": "Subquery. Use QueryDSL to describe query logic and generate a 2D data table or value."
+        },
+        "name": {
+          "type": "string",
+          "description": "Alias for subquery"
+        },
+        "joins": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoQuery.Join"
+          },
+          "description": "Table joins. Not recommended for large data table connections."
+        },
+        "sql": {
+          "$ref": "#/definitions/YaoQuery.SQL",
+          "description": "SQL statement. **Do not use unless necessary**"
+        },
+        "debug": {
+          "type": "boolean",
+          "description": "Enable debugging (included in query logs when enabled)"
+        }
+      },
+      "additionalProperties": false,
+      "description": "QueryDSL Gou Query Domain Specific Language"
+    },
+    "YaoQuery.Where": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "type": "string",
+          "description": "Query field"
+        },
+        "value": {
+          "type": "string",
+          "description": "Match value"
+        },
+        "op": {
+          "type": "string",
+          "description": "Comparison operator"
+        },
+        "or": {
+          "type": "string",
+          "description": "Use true for OR logical relationship in conditions, default is false for AND relationship"
+        },
+        "query": {
+          "type": "string",
+          "description": "Subquery, value is ignored if query is set."
+        },
+        "comment": {
+          "type": "string",
+          "description": "Comments for query conditions"
+        },
+        "wheres": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoQuery.Where"
+          },
+          "description": "Grouped queries. Used for scenarios like condition 1 and (condition 2 OR condition 3)"
+        }
+      },
+      "additionalProperties": {
+        "description": "Simplified operations example: { \":score\": \"points\", \"in\": [10, 20] }"
+      },
+      "description": "Where query conditions"
+    },
+    "YaoQuery.Recordable": {
+      "type": "object"
+    },
+    "YaoQuery.Orders": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/YaoQuery.Order"
+      },
+      "description": "Collection of order conditions"
+    },
+    "YaoQuery.Order": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "type": "string",
+          "description": "Field for sorting"
+        },
+        "sort": {
+          "type": "string",
+          "description": "Sorting method"
+        },
+        "comment": {
+          "type": "string",
+          "description": "Comments for query conditions"
+        }
+      },
+      "required": [
+        "field"
+      ],
+      "additionalProperties": false,
+      "description": "Order sorting conditions"
+    },
+    "YaoQuery.Groups": {
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoQuery.Group"
+          }
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ],
+      "description": "Collection of aggregation conditions"
+    },
+    "YaoQuery.Group": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "$ref": "#/definitions/YaoQuery.Expression",
+          "description": "Field for sorting"
+        },
+        "rollup": {
+          "type": "string",
+          "description": "Return multiple levels of aggregated results, corresponding to the name of the aggregated field value."
+        },
+        "comment": {
+          "type": "string",
+          "description": "Comments for query conditions"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Group aggregation conditions"
+    },
+    "YaoQuery.Expression": {
+      "type": "string"
+    },
+    "YaoQuery.Having": {
+      "type": "object",
+      "properties": {
+        "havings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoQuery.Having"
+          },
+          "description": "Grouped queries. Used for scenarios like condition 1 and (condition 2 OR condition 3)"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Having filter conditions for aggregate results"
+    },
+    "YaoQuery.Join": {
+      "type": "object",
+      "properties": {
+        "from": {
+          "$ref": "#/definitions/YaoQuery.Table",
+          "description": "Name of the queried data table or data model"
+        },
+        "key": {
+          "$ref": "#/definitions/YaoQuery.Expression",
+          "description": "Name of the joining table field"
+        },
+        "foreign": {
+          "$ref": "#/definitions/YaoQuery.Expression",
+          "description": "Name of the target table field (table or alias must be specified)"
+        },
+        "left": {
+          "type": "boolean",
+          "description": "Use true for LEFT JOIN, default is false for JOIN"
+        },
+        "right": {
+          "type": "boolean",
+          "description": "Use true for RIGHT JOIN, default is false for JOIN"
+        },
+        "comment": {
+          "type": "string",
+          "description": "Comments for join conditions"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Join operation on data tables"
+    },
+    "YaoQuery.Table": {
+      "type": "string"
+    },
+    "YaoQuery.SQL": {
+      "type": "object",
+      "properties": {
+        "stmt": {
+          "type": "string",
+          "description": "SQL statement, should not be mixed with other SQL query conditions"
+        },
+        "args": {
+          "type": "array",
+          "items": {},
+          "description": "Table of bound parameters"
+        },
+        "comment": {
+          "type": "string",
+          "description": "SQL statement comments"
+        }
+      },
+      "additionalProperties": false,
+      "description": "SQL statement"
+    }
+  }
+}

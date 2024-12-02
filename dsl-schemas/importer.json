@@ -1,0 +1,135 @@
+
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/YaoImport.Importer",
+  "definitions": {
+    "YaoImport.Importer": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "Version [Management Field]"
+        },
+        "decription": {
+          "type": "string",
+          "description": "Description [Management Field]"
+        },
+        "comment": {
+          "type": "string",
+          "description": "Comment [Management Field]"
+        },
+        "title": {
+          "type": "string",
+          "description": "Import Title"
+        },
+        "process": {
+          "type": "string",
+          "description": "Processor Name"
+        },
+        "output": {
+          "type": "string",
+          "description": "The output of the process import"
+        },
+        "columns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoImport.Column"
+          },
+          "description": "List of Fields"
+        },
+        "option": {
+          "$ref": "#/definitions/YaoImport.Option",
+          "description": "Import Options"
+        },
+        "rules": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Allowed Import Rules"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "process",
+        "columns"
+      ],
+      "additionalProperties": false,
+      "description": "Data Importer"
+    },
+    "YaoImport.Column": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "Field Label"
+        },
+        "name": {
+          "type": "string",
+          "description": "Field Name"
+        },
+        "field": {
+          "type": "string",
+          "description": "Field Name (Original Value), No Configuration Needed"
+        },
+        "match": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Matching Suggestions"
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Data Cleaning Rule Definitions"
+        },
+        "nullable": {
+          "type": "boolean",
+          "description": "Nullable"
+        },
+        "primary": {
+          "type": "boolean",
+          "description": "Primary Key"
+        }
+      },
+      "required": [
+        "label",
+        "name"
+      ],
+      "additionalProperties": false,
+      "description": "Import Field Definition"
+    },
+    "YaoImport.Option": {
+      "type": "object",
+      "properties": {
+        "useTemplate": {
+          "type": "boolean",
+          "description": "Use Pre-matched Template"
+        },
+        "templateLink": {
+          "type": "string",
+          "description": "Default Data Template Link"
+        },
+        "chunkSize": {
+          "type": "number",
+          "description": "Number of Records Processed Each Time"
+        },
+        "mappingPreview": {
+          "type": "string",
+          "description": "Field Mapping Interface Display Mode: auto - shown when template matching fails, always - always shown, never - never shown"
+        },
+        "dataPreview": {
+          "type": "string",
+          "description": "Data Preview Interface Display Mode: auto - shown when there is abnormal data, always - always shown, never - never shown"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Import Configuration Items"
+    }
+  }
+}

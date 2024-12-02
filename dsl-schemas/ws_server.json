@@ -1,0 +1,86 @@
+
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/YaoWebSocket.Server",
+  "definitions": {
+    "YaoWebSocket.Server": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description"
+        },
+        "version": {
+          "type": "string",
+          "description": "Version"
+        },
+        "protocols": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "WebSocket protocols"
+        },
+        "guard": {
+          "type": "string"
+        },
+        "buffer": {
+          "$ref": "#/definitions/YaoWebSocket.BufferSize",
+          "description": "Receive buffer size in bytes"
+        },
+        "limit": {
+          "$ref": "#/definitions/YaoWebSocket.Limit",
+          "description": "Limitations"
+        },
+        "timeout": {
+          "type": "number",
+          "description": "WebSocket connection timeout (seconds), default is 5 seconds"
+        },
+        "process": {
+          "type": "string",
+          "description": "WebSocket message processor"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoWebSocket.BufferSize": {
+      "type": "object",
+      "properties": {
+        "read": {
+          "type": "number",
+          "description": "Read buffer size (bytes), default is 1024"
+        },
+        "write": {
+          "type": "number",
+          "description": "Write buffer size (bytes), default is 1024"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoWebSocket.Limit": {
+      "type": "object",
+      "properties": {
+        "write-wait": {
+          "type": "number",
+          "description": "Write wait time (seconds), default is 10"
+        },
+        "pong-wait": {
+          "type": "number",
+          "description": "Pong wait time (seconds), default is 60"
+        },
+        "max-message": {
+          "type": "number",
+          "description": "Maximum message size limit in bytes, default is 1024"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

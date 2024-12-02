@@ -1,0 +1,199 @@
+
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/YaoPipe.Pipe",
+  "definitions": {
+    "YaoPipe.Pipe": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name"
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoPipe.Node"
+          },
+          "description": "Node configuration"
+        },
+        "label": {
+          "type": "string",
+          "description": "Label description"
+        },
+        "hooks": {
+          "$ref": "#/definitions/YaoPipe.Hooks",
+          "description": "Hooks settings"
+        },
+        "output": {
+          "description": "Output"
+        },
+        "input": {
+          "$ref": "#/definitions/YaoPipe.Input",
+          "description": "Input"
+        },
+        "whitelist": {
+          "$ref": "#/definitions/YaoPipe.Whitelist",
+          "description": "Processor whitelist, only processors in the whitelist will be called"
+        },
+        "goto": {
+          "type": "string",
+          "description": "Node redirection"
+        }
+      },
+      "required": [
+        "name",
+        "nodes"
+      ],
+      "additionalProperties": false
+    },
+    "YaoPipe.Node": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Node name, used as a reference to the node"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "user-input",
+            "ai",
+            "process",
+            "switch",
+            "request"
+          ],
+          "description": "Internal node type, no direct setting needed, priority: process > request > ai > user-input > switch"
+        },
+        "label": {
+          "type": "string",
+          "description": "Label description"
+        },
+        "process": {
+          "$ref": "#/definitions/YaoPipe.YaoProcess",
+          "description": "Processor, node type automatically set to process after setting"
+        },
+        "prompts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/YaoPipe.Prompt"
+          },
+          "description": "AI prompt words, node type automatically set to ai after setting"
+        },
+        "model": {
+          "type": "string",
+          "description": "AI model, defaults to gpt-3.5-turbo"
+        },
+        "options": {
+          "type": "object",
+          "description": "Payload options for AI request"
+        },
+        "request": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Request"
+        },
+        "ui": {
+          "type": "string",
+          "description": "Client when accepting user input: cli | web | app | wxapp"
+        },
+        "autofill": {
+          "$ref": "#/definitions/YaoPipe.AutoFill",
+          "description": "Auto-fill"
+        },
+        "case": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/YaoPipe.Pipe"
+          },
+          "description": "When it is a switch node, perform condition check, only one condition will take effect"
+        },
+        "input": {
+          "$ref": "#/definitions/YaoPipe.Input",
+          "description": "Node input parameters"
+        },
+        "output": {
+          "description": "Node output parameters"
+        },
+        "goto": {
+          "type": "string",
+          "description": "Jump expression, redirect to the specified node after meeting certain conditions"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false,
+      "description": "Pipe node configuration"
+    },
+    "YaoPipe.YaoProcess": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "args": {
+          "$ref": "#/definitions/YaoPipe.Args"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "YaoPipe.Args": {
+      "type": "array",
+      "items": {}
+    },
+    "YaoPipe.Prompt": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "content"
+      ],
+      "additionalProperties": false
+    },
+    "YaoPipe.AutoFill": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "description": "Can be an expression, the parsed value is used as input parameters for the client command"
+        },
+        "action": {
+          "type": "string",
+          "description": "Auto-process, if exit, will automatically exit the process"
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "YaoPipe.Input": {
+      "type": "array",
+      "items": {}
+    },
+    "YaoPipe.Hooks": {
+      "type": "object",
+      "properties": {
+        "progress": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YaoPipe.Whitelist": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "boolean"
+      }
+    }
+  }
+}
