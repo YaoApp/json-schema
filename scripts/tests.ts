@@ -1,4 +1,4 @@
-import { FS, Process, Query, Store } from "@yao/runtime";
+import { FS, http, Process, Query, Store } from "@yao/runtime";
 
 function TestProcess() {
   Process("models.widget.Get", { wheres: [{ column: "id", value: 1 }] });
@@ -31,6 +31,9 @@ function TestHTTP() {
     "https://jsonplaceholder.typicode.com/posts/1"
   );
   console.log(res.code);
+
+  const res2 = http.Get("https://jsonplaceholder.typicode.com/posts/1");
+  console.log(res2.code);
 }
 
 function TestStore() {

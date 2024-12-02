@@ -33,7 +33,7 @@ function GenerateStore() {
 }
 
 /**
- * Generate Process Object definition
+ * Generate Query Object definition
  * yao run scripts.runtime.GenerateQuery
  */
 function GenerateQuery() {
@@ -42,4 +42,16 @@ function GenerateQuery() {
   const content = send(pmt);
   const fs = new FS("app");
   fs.WriteFile(".vscode/types/runtime/query.d.ts", getCode(content));
+}
+
+/**
+ * Generate Http Object definition
+ * yao run scripts.runtime.GenerateHttp
+ */
+function GenerateHttp() {
+  console.log("Generating Http Object definition");
+  const pmt = prompt("runtime/http.yml");
+  const content = send(pmt);
+  const fs = new FS("app");
+  fs.WriteFile(".vscode/types/runtime/http.d.ts", getCode(content));
 }
