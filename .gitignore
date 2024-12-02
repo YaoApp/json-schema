@@ -1,3 +1,4 @@
 moapi.env.sh
 data/source
 data/prompts/*.md
+data/prompts/*/*.md
