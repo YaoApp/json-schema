@@ -14,3 +14,11 @@ function TestProcess() {
 function TestFS() {
   Process("fs.app.ReadFile", "app/models/widget.ts");
 }
+
+function TestHTTP() {
+  const res = Process(
+    "http.Get",
+    "https://jsonplaceholder.typicode.com/posts/1"
+  );
+  console.log(res.code);
+}

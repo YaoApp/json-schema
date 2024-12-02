@@ -1,0 +1,58 @@
+requirements: |
+  **Objective:**
+
+  Analyze the provided Golang code to generate a comprehensive TypeScript definition file. The focus should be on interpreting the logic within the Golang code, rather than just the function signatures.
+
+  **Requirements:**
+
+  1. **Golang Code Analysis:**
+    - Analyze the logic of the Golang code in the specified files.
+    - Extract relevant data types and structures from the Golang code to inform the TypeScript definitions.
+
+  2. **TypeScript Definition File:**
+    - Define TypeScript types and interfaces that correspond to the Golang structures and logic.
+    - Each process function found in `process.go` and its related types must be defined in TypeScript.
+    - DO NOT use the Promise type in the TypeScript definitions.
+    - the process argument in the function name should be in the format of `http.${FunctionName}`, e.g. `http.Get`.
+
+  3. **Function Naming:**
+    - All process functions should be named as `Process` in the TypeScript file.
+
+  4. **Code Block Identification:**
+    - Use `{{[ CODE BEGIN ]}}` and `{{[ CODE END ]}}` comments to clearly identify the boundaries of the code block within the output. These markers must remain in the final TypeScript file.
+
+  5. **Function Extraction:**
+    - Return the complete definitions of all functions in the `gou/model/process.go` file.
+    - Each type or interface used in the function **should be** defined in the TypeScript file.
+    
+  6. **Function Comments:**
+    - Must include the function comments in the TypeScript definitions.
+    - The Type structure or Interface which is used in the function , each field should have a comment.
+
+  7. **Export**
+    - Each function should be exported.
+    - Each type should be exported.
+
+Sources:
+  - "gou/http/types.go"
+  - "gou/http/http.go"
+  - "gou/http/process.go"
+
+TypeScript Template: |
+  ```typescript
+  {{[ CODE BEGIN ]}}
+  export type HttpResponse ...
+  ....
+
+  /**
+  * Read file content
+  * @param name fs.**Root**.ReadFile File system root, app or data
+  * @param filename string file name relative to the root
+  */
+  export declare function Process(
+    process: `http.Get`,
+    ....
+  ): HttpResponse;
+  ...
+  {{[ CODE END ]}}
+  ```

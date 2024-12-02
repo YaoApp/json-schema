@@ -36,12 +36,24 @@ function GenerateFS() {
 }
 
 /**
+ * Generate HTTP definition
+ * yao run scripts.process.GenerateHTTP
+ */
+function GenerateHTTP() {
+  console.log("Generating HTTP definition");
+  const pmt = prompt("http.yml");
+  const content = send(pmt);
+  const fs = new FS("app");
+  fs.WriteFile(".vscode/types/runtime/process/http.d.ts", getCode(content));
+}
+
+/**
  * Merge all Process functions
  * yao run scripts.process.Merge
  */
 function Merge() {
   console.log("Merging Process functions");
-  const files = ["model.d.ts", "fs.d.ts"];
+  const files = ["model.d.ts", "fs.d.ts", "http.d.ts"];
   const fs = new FS("app");
 
   let source = ``;
