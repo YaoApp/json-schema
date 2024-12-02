@@ -5,3 +5,4 @@ export * from "./runtime/query";
 export * from "./runtime/http";
 export * from "./runtime/time";
 export * from "./runtime/log";
+export * from "./runtime/exception";

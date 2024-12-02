@@ -1,4 +1,13 @@
-import { FS, http, log, Process, Query, Store, time } from "@yao/runtime";
+import {
+  Exception,
+  FS,
+  http,
+  log,
+  Process,
+  Query,
+  Store,
+  time,
+} from "@yao/runtime";
 
 function TestProcess() {
   Process("models.widget.Get", { wheres: [{ column: "id", value: 1 }] });
@@ -82,4 +91,12 @@ function TestLog() {
   log.Warn("This is a warn message");
   log.Error("This is an error message");
   log.Fatal("This is a fatal message");
+}
+
+/**
+ * yao run scripts.tests.TestException
+ */
+function TestException() {
+  const ex = new Exception("This is an exception", 400);
+  console.log(ex.message);
 }

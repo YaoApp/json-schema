@@ -79,3 +79,15 @@ function GenerateLog() {
   const fs = new FS("app");
   fs.WriteFile(".vscode/types/runtime/log.d.ts", getCode(content));
 }
+
+/**
+ * Generate Exception Object definition
+ * yao run scripts.runtime.GenerateException
+ */
+function GenerateException() {
+  console.log("Generating Exception Object definition");
+  const pmt = prompt("runtime/exception.yml");
+  const content = send(pmt);
+  const fs = new FS("app");
+  fs.WriteFile(".vscode/types/runtime/exception.d.ts", getCode(content));
+}

@@ -1,0 +1,54 @@
+requirements: |
+  **Objective:**
+
+  Analyze the provided Golang code to generate a comprehensive TypeScript definition file. The focus should be on interpreting the logic within the Golang code, rather than just the function signatures.
+
+  **Requirements:**
+
+  1. **Golang Code Analysis:**
+    - Analyze the logic of the Golang code in the specified files.
+    - Extract relevant data types and structures from the Golang code to inform the TypeScript definitions.
+
+  2. **TypeScript Definition File:**
+    - Define TypeScript types and interfaces that correspond to the Golang structures and logic.
+    - Each method found in `ExportObject` and its related types must be defined in TypeScript.
+    - DO NOT use the Promise type in the TypeScript definitions.
+    - The class methods should be named same as the function name in the ExportObject. eg: tmpl.Set("Set", obj.exists(iso)) the method name should be "Set".
+    - DO NOT Change the constructor, the widgetID should be the first parameter of the constructor.
+
+  3. **Code Block Identification:**
+    - Use `{{[ CODE BEGIN ]}}` and `{{[ CODE END ]}}` comments to clearly identify the boundaries of the code block within the output. These markers must remain in the final TypeScript file.
+
+  4. **Function Extraction:**
+    - Return the complete definitions of all functions in the `objects/exception/exception.go` file.
+    - Each type or interface used in the function **should be** defined in the TypeScript file.
+    - Return the definition of the class `Exception` and its constructor.
+    
+  5. **Function Comments:**
+    - Must include the function comments in the TypeScript definitions.
+    - Must include the method comments in the TypeScript definitions.
+    - Use /** */ for comments, it should be above the function or method, and can be recognized by the VSCode, Cursor, etc.
+    - The Type structure or Interface which is used in the function , each field should have a comment.
+
+  6. **Export**
+    - Each function should be exported.
+    - Each type should be exported.
+
+Sources:
+  - "gou/runtime/v8/objects/exception/exception.go"
+
+TypeScript Template: |
+  ```typescript
+  {{[ CODE BEGIN ]}}
+  export type XXXX = {}
+  ....
+
+  export declare class Exception {
+    code: number;
+    message: string;
+    constructor(message: string, code: number, ...args: any[]);
+    ...
+  }
+  ...
+  {{[ CODE END ]}}
+  ```
