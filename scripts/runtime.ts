@@ -19,3 +19,15 @@ function GenerateFS() {
   const fs = new FS("app");
   fs.WriteFile(".vscode/types/runtime/fs.d.ts", getCode(content));
 }
+
+/**
+ * Generate Store Object definition
+ * yao run scripts.runtime.GenerateStore
+ */
+function GenerateStore() {
+  console.log("Generating Store Object definition");
+  const pmt = prompt("runtime/store.yml");
+  const content = send(pmt);
+  const fs = new FS("app");
+  fs.WriteFile(".vscode/types/runtime/store.d.ts", getCode(content));
+}

@@ -1,13 +1,12 @@
-
-
 /**
- * Represents the name of a FileSystem. 
+ * Represents the name of a FileSystem.
  * It can be "app", "data" or any custom string.
  */
-export type FileSystemName = "app" | "data" | string;
+
+import type { FileSystemName } from "./process/process";
 
 /**
- * FS class is a wrapper around the FileSystem interface, 
+ * FS class is a wrapper around the FileSystem interface,
  * providing various file system operations.
  */
 export declare class FS {
@@ -131,7 +130,12 @@ export declare class FS {
    * @param data - The data to insert.
    * @param perm - The permission mode (optional).
    */
-  InsertFileBuffer(path: string, offset: number, data: Uint8Array, perm?: number): number;
+  InsertFileBuffer(
+    path: string,
+    offset: number,
+    data: Uint8Array,
+    perm?: number
+  ): number;
 
   /**
    * Inserts base64 encoded data into a file at the specified offset.
@@ -140,7 +144,12 @@ export declare class FS {
    * @param data - The base64 encoded data to insert.
    * @param perm - The permission mode (optional).
    */
-  InsertFileBase64(path: string, offset: number, data: string, perm?: number): number;
+  InsertFileBase64(
+    path: string,
+    offset: number,
+    data: string,
+    perm?: number
+  ): number;
 
   /**
    * Removes the specified file or directory.
@@ -159,7 +168,7 @@ export declare class FS {
    * Downloads a file and returns its MIME type and content as a ReadCloser.
    * @param path - The file path.
    */
-  Download(path: string): { type: string, content: ReadableStream<Uint8Array> };
+  Download(path: string): { type: string; content: ReadableStream<Uint8Array> };
 
   // Directory
   /**
@@ -299,4 +308,3 @@ export declare class FS {
    */
   Glob(pattern: string): string[];
 }
-
