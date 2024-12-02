@@ -3,6 +3,19 @@
 // Maintainer: https://yaoapps.com
 
 /**
+ * The data fetched from the server.
+ */
+export declare const __sui_data: Record<string, any>;
+
+/**
+ * The localized messages and settings.
+ */
+export declare function __m(message: string): string;
+
+// @ts-ignore: Ignore the specific error
+export declare const arguments: any[] = [];
+
+/**
  * Headers object for requests.
  */
 export type Headers =
@@ -293,6 +306,21 @@ export declare function $Query(selector: string | HTMLElement): SUIQuery;
  * Class for DOM manipulation and traversal.
  */
 export declare class SUIQuery {
+  /**
+   * The selector or element used for querying.
+   */
+  selector: string | Element;
+
+  /**
+   * The current element or null.
+   */
+  element: Element | null;
+
+  /**
+   * All matched elements or null.
+   */
+  elements: NodeListOf<Element> | null;
+
   /**
    * Create a query instance.
    */
