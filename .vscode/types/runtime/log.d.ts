@@ -1,59 +1,74 @@
-export type LogLevel =
-  | "Trace"
-  | "Debug"
-  | "Info"
-  | "Warn"
-  | "Error"
-  | "Fatal"
-  | "Panic";
 
-export declare class log {
-  /**
-   * Logs a trace message
-   * @param message The message format
-   * @param args Optional values to format the message
-   */
-  public static Trace(message: string, ...args: any[]): void;
 
-  /**
-   * Logs a debug message
-   * @param message The message format
-   * @param args Optional values to format the message
-   */
-  public static Debug(message: string, ...args: any[]): void;
-
-  /**
-   * Logs an informational message
-   * @param message The message format
-   * @param args Optional values to format the message
-   */
-  public static Info(message: string, ...args: any[]): void;
-
-  /**
-   * Logs a warning message
-   * @param message The message format
-   * @param args Optional values to format the message
-   */
-  public static Warn(message: string, ...args: any[]): void;
-
-  /**
-   * Logs an error message
-   * @param message The message format
-   * @param args Optional values to format the message
-   */
-  public static Error(message: string, ...args: any[]): void;
-
-  /**
-   * Logs a fatal error message
-   * @param message The message format
-   * @param args Optional values to format the message
-   */
-  public static Fatal(message: string, ...args: any[]): void;
-
-  /**
-   * Logs a panic message
-   * @param message The message format
-   * @param args Optional values to format the message
-   */
-  public static Panic(message: string, ...args: any[]): void;
+/**
+ * Log Level enum to represent different levels of logging.
+ */
+export enum LogLevel {
+  Trace,
+  Debug,
+  Info,
+  Warn,
+  Error,
+  Fatal,
+  Panic
 }
+
+/**
+ * Interface for the logging functions available in the log package.
+ */
+export interface Log {
+  /**
+   * Logs a message at the trace level.
+   * @param message - The message to log.
+   * @param values - Additional values to log.
+   */
+  Trace(message: string, ...values: any[]): void;
+
+  /**
+   * Logs a message at the debug level.
+   * @param message - The message to log.
+   * @param values - Additional values to log.
+   */
+  Debug(message: string, ...values: any[]): void;
+
+  /**
+   * Logs a message at the info level.
+   * @param message - The message to log.
+   * @param values - Additional values to log.
+   */
+  Info(message: string, ...values: any[]): void;
+
+  /**
+   * Logs a message at the warning level.
+   * @param message - The message to log.
+   * @param values - Additional values to log.
+   */
+  Warn(message: string, ...values: any[]): void;
+
+  /**
+   * Logs a message at the error level.
+   * @param message - The message to log.
+   * @param values - Additional values to log.
+   */
+  Error(message: string, ...values: any[]): void;
+
+  /**
+   * Logs a message at the fatal level.
+   * @param message - The message to log.
+   * @param values - Additional values to log.
+   */
+  Fatal(message: string, ...values: any[]): void;
+
+  /**
+   * Logs a message at the panic level.
+   * @param message - The message to log.
+   * @param values - Additional values to log.
+   */
+  Panic(message: string, ...values: any[]): void;
+}
+
+/**
+ * Export a singleton instance of the Log interface.
+ */
+export declare var log: Log;
+

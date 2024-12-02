@@ -3,6 +3,7 @@ import {
   FS,
   http,
   log,
+  console,
   Process,
   Query,
   Store,

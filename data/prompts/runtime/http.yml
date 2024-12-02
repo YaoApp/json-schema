@@ -14,7 +14,6 @@ requirements: |
     - Each method found in `ExportObject` and its related types must be defined in TypeScript.
     - DO NOT use the Promise type in the TypeScript definitions.
     - The class methods should be named same as the function name in the ExportObject. eg: tmpl.Set("Get", obj.get(iso)) the method name should be "Get".
-    - Each method should be public static.
 
   3. **Code Block Identification:**
     - Use `{{[ CODE BEGIN ]}}` and `{{[ CODE END ]}}` comments to clearly identify the boundaries of the code block within the output. These markers must remain in the final TypeScript file.
@@ -42,12 +41,14 @@ Sources:
 TypeScript Template: |
   ```typescript
   {{[ CODE BEGIN ]}}
-  export type HttpResponse ...
+  export type XXX...
   ....
 
-  export declare class http {
-    public static Get(url: string, headers: Record<string, string>): HttpResponse;
+  export interface HTTP{
+    Get(url: string, query?: Record<string, string> | [string, string][] | Array<Record<string, string>> | string,headers?: Record<string, string> | Record<string, string>[] ): HttpResponse;
     ...
   }
+
+  export declare var http : HTTP;
   {{[ CODE END ]}}
   ```

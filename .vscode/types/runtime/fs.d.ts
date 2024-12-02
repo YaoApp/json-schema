@@ -3,7 +3,7 @@
  * It can be "app", "data" or any custom string.
  */
 
-import type { FileSystemName } from "./process/process";
+import type { FileSystemName } from "./process";
 
 /**
  * FS class is a wrapper around the FileSystem interface,
