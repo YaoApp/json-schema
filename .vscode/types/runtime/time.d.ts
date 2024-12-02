@@ -1,25 +1,24 @@
 
-
 /**
- * Type definition for the time management options in the Go code.
- * This class represents the time object with methods to replicate Golang functionality.
+ * Represents the Time interface for scheduling operations.
  */
-export declare class time {
-  
-  /**
-   * Sleeps for the specified amount of milliseconds.
-   * 
-   * @param milliseconds The duration in milliseconds for which execution is paused.
-   */
-  public static Sleep(milliseconds: number): void;
-  
-  /**
-   * After waiting for the specified amount of milliseconds, invokes a named process.
-   * 
-   * @param milliseconds The amount of time to wait, in milliseconds.
-   * @param processName The name of the process to execute after the delay.
-   * @param args Optional arguments to pass to the process.
-   */
-  public static After(milliseconds: number, processName: string, ...args: any[]): void;
+export interface Time {
+    /**
+     * Pauses the execution for a specified number of milliseconds.
+     * @param ms The time to sleep in milliseconds.
+     */
+    Sleep(ms: number): void;
+
+    /**
+     * Schedules a function to execute after a specific duration.
+     * @param ms The time to wait before executing the function, in milliseconds.
+     * @param name The name of the process to call.
+     * @param args Additional arguments to pass to the process.
+     */
+    After(ms: number, name: string, ...args: any[]): void;
 }
 
+/**
+ * Declare the global `time` variable implementing the Time interface.
+ */
+export declare var time: Time;
