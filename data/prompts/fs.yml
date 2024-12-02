@@ -41,17 +41,17 @@ Sources:
 TypeScript Template: |
   ```typescript
   {{[ CODE BEGIN ]}}
-  export type FileSystemRoot = "app" | "data";
+  export type FileSystemName = "app" | "data" | string;
   export type XXXX = {}
   ....
 
   /**
   * Read file content
-  * @param name fs.**Root**.ReadFile File system root, app or data
+  * @param name fs.**FileSystemName**.ReadFile File system root, app or data
   * @param filename string file name relative to the root
   */
   export declare function Process(
-    process: `fs.${FileSystemRoot}.ReadFile`,
+    process: `fs.${FileSystemName}.ReadFile`,
     filename: string
   ): string;
   ...

@@ -1,260 +1,302 @@
 
 
 /**
- * Represents a filesystem for operations.
+ * Represents the name of a FileSystem. 
+ * It can be "app", "data" or any custom string.
  */
-export type FileSystemName = "system" | string;
+export type FileSystemName = "app" | "data" | string;
 
 /**
- * FileSystem interface to define file operations.
- * This is based on the functions available in the Golang `FileSystem` interface.
- */
-export interface FileSystem {
-  ReadFile(file: string): [string, Error];
-  WriteFile(file: string, data: string, perm?: number): [number, Error];
-  AppendFile(file: string, data: string, perm?: number): [number, Error];
-  InsertFile(file: string, offset: number, data: string, perm?: number): [number, Error];
-  ReadDir(dir: string, recursive?: boolean): [string[], Error];
-  Mkdir(dir: string, perm?: number): Error | undefined;
-  MkdirAll(dir: string, perm?: number): Error | undefined;
-  MkdirTemp(dir?: string, pattern?: string): [string, Error];
-  Remove(name: string): Error | undefined;
-  RemoveAll(name: string): Error | undefined;
-  Exists(name: string): [boolean, Error];
-  Size(name: string): [number, Error];
-  Mode(name: string): [number, Error];
-  ModTime(name: string): [number, Error];
-  Chmod(name: string, mode: number): Error | undefined;
-  IsDir(name: string): boolean;
-  IsFile(name: string): boolean;
-  IsLink(name: string): boolean;
-  Move(oldpath: string, newpath: string): Error | undefined;
-  Copy(src: string, dest: string): Error | undefined;
-  MimeType(name: string): [string, Error];
-  Zip(name: string, target: string): Error | undefined;
-  Unzip(name: string, target: string): [string[], Error];
-  BaseName(name: string): string;
-  DirName(name: string): string;
-  ExtName(name: string): string;
-}
-
-/**
- * File operation error.
- */
-export type Error = string;
-
-/**
- * FS class providing file system operations.
+ * FS class is a wrapper around the FileSystem interface, 
+ * providing various file system operations.
  */
 export declare class FS {
   /**
    * Create a new instance of FS
-   * @param name Name of the filesystem, e.g., 'system'.
+   * @param root Root path for the application.
    */
-  constructor(name?: FileSystemName);
+  constructor(root: FileSystemName);
 
+  // Check file
   /**
-   * Check if the path exists.
-   * @param path The path to check.
-   * @returns true if exists; false otherwise.
+   * Checks if a file or directory exists.
+   * @param path - The path to the file or directory.
    */
   Exists(path: string): boolean;
 
   /**
-   * Check if the path is a directory.
-   * @param path The path to check.
-   * @returns true if it's a directory; false otherwise.
+   * Checks if the given path is a directory.
+   * @param path - The path to check.
    */
   IsDir(path: string): boolean;
 
   /**
-   * Check if the path is a file.
-   * @param path The path to check.
-   * @returns true if it's a file; false otherwise.
+   * Checks if the given path is a file.
+   * @param path - The path to check.
    */
   IsFile(path: string): boolean;
 
   /**
-   * Check if the path is a symbolic link.
-   * @param path The path to check.
-   * @returns true if it's a link; false otherwise.
+   * Checks if the given path is a symbolic link.
+   * @param path - The path to check.
    */
   IsLink(path: string): boolean;
 
+  // Basic file operation
   /**
-   * Read a file and return its content as a string.
-   * @param file Path of the file to read.
-   * @returns Content of the file.
+   * Reads the content of a file and returns it as a string.
+   * @param path - The path to the file.
    */
-  ReadFile(file: string): string;
+  ReadFile(path: string): string;
 
   /**
-   * Write content to a file.
-   * @param file Path of the file to write.
-   * @param data Content to write.
-   * @param perm (Optional) File permission.
-   * @returns Number of bytes written.
+   * Reads the content of a file and returns it as a Uint8Array.
+   * @param path - The path to the file.
    */
-  WriteFile(file: string, data: string, perm?: number): number;
+  ReadFileBuffer(path: string): Uint8Array;
 
   /**
-   * Append content to a file.
-   * @param file Path of the file to append.
-   * @param data Content to append.
-   * @param perm (Optional) File permission.
-   * @returns Number of bytes appended.
+   * Reads the content of a file and returns it as a base64 encoded string.
+   * @param path - The path to the file.
    */
-  AppendFile(file: string, data: string, perm?: number): number;
+  ReadFileBase64(path: string): string;
 
   /**
-   * Insert content into a file at a specified offset.
-   * @param file Path of the file to insert.
-   * @param offset Position to insert the data.
-   * @param data Content to insert.
-   * @param perm (Optional) File permission.
-   * @returns Number of bytes inserted.
+   * Reads a file and returns a ReadCloser for streaming.
+   * @param path - The path to the file.
    */
-  InsertFile(file: string, offset: number, data: string, perm?: number): number;
+  ReadCloser(path: string): ReadableStream<Uint8Array>;
 
   /**
-   * Read a directory and return its contents.
-   * @param dir Directory path to read.
-   * @param recursive (Optional) If true, read directories recursively.
-   * @returns List of directory entries.
+   * Writes the provided data to a file.
+   * @param path - The path to the file.
+   * @param data - The data to write.
+   * @param perm - The permission mode (optional).
    */
-  ReadDir(dir: string, recursive?: boolean): string[];
+  WriteFile(path: string, data: string, perm?: number): number;
 
   /**
-   * Create a directory.
-   * @param dir Path of the directory to create.
-   * @param perm (Optional) Directory permission.
+   * Writes the provided Uint8Array data to a file.
+   * @param path - The path to the file.
+   * @param data - The data to write.
+   * @param perm - The permission mode (optional).
    */
-  Mkdir(dir: string, perm?: number): void;
+  WriteFileBuffer(path: string, data: Uint8Array, perm?: number): number;
 
   /**
-   * Create a directory with all necessary parent directories.
-   * @param dir Path of the directory to create.
-   * @param perm (Optional) Directory permission.
+   * Writes the provided base64 encoded data to a file.
+   * @param path - The path to the file.
+   * @param data - The base64 encoded data to write.
+   * @param perm - The permission mode (optional).
    */
-  MkdirAll(dir: string, perm?: number): void;
+  WriteFileBase64(path: string, data: string, perm?: number): number;
 
   /**
-   * Create a temporary directory.
-   * @param dir (Optional) Path where to create the directory.
-   * @param pattern (Optional) Pattern for temporary directory name.
-   * @returns Path of the created temporary directory.
+   * Appends the provided data to a file.
+   * @param path - The path to the file.
+   * @param data - The data to append.
+   * @param perm - The permission mode (optional).
    */
-  MkdirTemp(dir?: string, pattern?: string): string;
+  AppendFile(path: string, data: string, perm?: number): number;
 
   /**
-   * Remove a file or directory.
-   * @param name Path of the file/directory to remove.
+   * Appends the provided Uint8Array data to a file.
+   * @param path - The path to the file.
+   * @param data - The data to append.
+   * @param perm - The permission mode (optional).
    */
-  Remove(name: string): void;
+  AppendFileBuffer(path: string, data: Uint8Array, perm?: number): number;
 
   /**
-   * Remove a file/directory and all its children.
-   * @param name Path of the file/directory to remove.
+   * Appends the provided base64 encoded data to a file.
+   * @param path - The path to the file.
+   * @param data - The base64 encoded data to append.
+   * @param perm - The permission mode (optional).
    */
-  RemoveAll(name: string): void;
+  AppendFileBase64(path: string, data: string, perm?: number): number;
 
   /**
-   * Get the MIME type of a file.
-   * @param name Path of the file.
-   * @returns MIME type of the file.
+   * Inserts data into a file at the specified offset.
+   * @param path - The path to the file.
+   * @param offset - The position to insert the data.
+   * @param data - The data to insert.
+   * @param perm - The permission mode (optional).
    */
-  MimeType(name: string): string;
+  InsertFile(path: string, offset: number, data: string, perm?: number): number;
 
   /**
-   * Change the permissions of a file/directory.
-   * @param name Path of the file/directory.
-   * @param mode The mode to set.
+   * Inserts Uint8Array data into a file at the specified offset.
+   * @param path - The path to the file.
+   * @param offset - The position to insert the data.
+   * @param data - The data to insert.
+   * @param perm - The permission mode (optional).
    */
-  Chmod(name: string, mode: number): void;
+  InsertFileBuffer(path: string, offset: number, data: Uint8Array, perm?: number): number;
 
   /**
-   * Move a file or directory.
-   * @param src Source path of the file/directory.
-   * @param dst Destination path of the file/directory.
+   * Inserts base64 encoded data into a file at the specified offset.
+   * @param path - The path to the file.
+   * @param offset - The position to insert the data.
+   * @param data - The base64 encoded data to insert.
+   * @param perm - The permission mode (optional).
    */
-  Move(src: string, dst: string): void;
+  InsertFileBase64(path: string, offset: number, data: string, perm?: number): number;
 
   /**
-   * Copy a file or directory.
-   * @param src Source path of the file/directory.
-   * @param dst Destination path of the file/directory.
+   * Removes the specified file or directory.
+   * @param path - The path to the file or directory.
    */
-  Copy(src: string, dst: string): void;
+  Remove(path: string): void;
 
   /**
-   * Create a ZIP archive of a directory.
-   * @param name Path of the directory to ZIP.
-   * @param target Path of the ZIP archive to create.
+   * Removes a path and any children it contains.
+   * @param path - The path to remove.
    */
-  Zip(name: string, target: string): void;
+  RemoveAll(path: string): void;
+
+  // Download
+  /**
+   * Downloads a file and returns its MIME type and content as a ReadCloser.
+   * @param path - The file path.
+   */
+  Download(path: string): { type: string, content: ReadableStream<Uint8Array> };
+
+  // Directory
+  /**
+   * Reads a directory and returns an array of its entries.
+   * @param path - The directory path.
+   * @param recursive - Whether to read recursively (optional).
+   */
+  ReadDir(path: string, recursive?: boolean): string[];
 
   /**
-   * Extract a ZIP archive into a specified directory.
-   * @param name Path of the ZIP archive to extract.
-   * @param target Directory where to extract the files.
-   * @returns List of extracted files.
+   * Creates a new directory with the specified path and permissions.
+   * @param path - The path to create.
+   * @param perm - The permission mode (optional).
    */
-  Unzip(name: string, target: string): string[];
+  Mkdir(path: string, perm?: number): void;
 
   /**
-   * Get the size of a file.
-   * @param name Path of the file.
-   * @returns Size of the file in bytes.
+   * Creates a directory along with any necessary parents.
+   * @param path - The directory path.
+   * @param perm - The permission mode (optional).
    */
-  Size(name: string): number;
+  MkdirAll(path: string, perm?: number): void;
 
   /**
-   * Get the mode (permissions) of a file.
-   * @param name Path of the file.
-   * @returns Mode of the file.
+   * Creates a new temporary directory and returns its path.
+   * @param path - The directory path.
+   * @param pattern - The directory name pattern (optional).
    */
-  Mode(name: string): number;
+  MkdirTemp(path?: string, pattern?: string): string;
+
+  // File info
+  /**
+   * Changes the mode of the named file or directory.
+   * @param path - The file or directory path.
+   * @param mode - The new mode.
+   */
+  Chmod(path: string, mode: number): void;
 
   /**
-   * Get the modification time of a file.
-   * @param name Path of the file.
-   * @returns Modification time of the file as a UNIX timestamp.
+   * Returns the base name of a file or directory path.
+   * @param path - The file or directory path.
    */
-  ModTime(name: string): number;
+  BaseName(path: string): string;
 
   /**
-   * Convert a path into an absolute path.
-   * @param path The path to convert.
-   * @returns Absolute path.
+   * Returns the directory name of a path.
+   * @param path - The file or directory path.
+   */
+  DirName(path: string): string;
+
+  /**
+   * Returns the extension of the file name.
+   * @param path - The file path.
+   */
+  ExtName(path: string): string;
+
+  /**
+   * Returns the MIME type of the file.
+   * @param path - The file path.
+   */
+  MimeType(path: string): string;
+
+  /**
+   * Returns the mode of the file or directory.
+   * @param path - The file or directory path.
+   */
+  Mode(path: string): number;
+
+  /**
+   * Returns the size in bytes of a file.
+   * @param path - The file path.
+   */
+  Size(path: string): number;
+
+  /**
+   * Returns the modification time of the file or directory.
+   * @param path - The file or directory path.
+   */
+  ModTime(path: string): number;
+
+  // File operation
+  /**
+   * Moves a file or directory.
+   * @param src - The source path.
+   * @param dest - The destination path.
+   */
+  Move(src: string, dest: string): void;
+
+  /**
+   * Copies a file or directory.
+   * @param src - The source path.
+   * @param dest - The destination path.
+   */
+  Copy(src: string, dest: string): void;
+
+  /**
+   * Moves a file and appends its content to the destination.
+   * @param src - The source file path.
+   * @param dest - The destination file path.
+   */
+  MoveAppend(src: string, dest: string): void;
+
+  /**
+   * Moves a file and inserts its content into the destination at the specified offset.
+   * @param src - The source file path.
+   * @param dest - The destination file path.
+   * @param offset - The insert offset.
+   */
+  MoveInsert(src: string, dest: string, offset: number): void;
+
+  // Directory operation
+  /**
+   * Resolves an absolute path.
+   * @param path - The relative path.
    */
   Abs(path: string): string;
 
+  // Compression
   /**
-   * Perform a glob match.
-   * @param pattern The pattern to match.
-   * @returns List of matching file paths.
+   * Compresses directory contents into a zip file.
+   * @param dir - The directory to compress.
+   * @param target - The path of the target zip file.
+   */
+  Zip(dir: string, target: string): void;
+
+  /**
+   * Decompresses a zip file into a target directory.
+   * @param zipFile - The zip file path.
+   * @param target - The target directory.
+   */
+  Unzip(zipFile: string, target: string): string[];
+
+  // Glob
+  /**
+   * Returns an array of paths matching a pattern.
+   * @param pattern - The glob pattern.
    */
   Glob(pattern: string): string[];
-
-  /**
-   * Get the base name of a path.
-   * @param name The path.
-   * @returns Base name.
-   */
-  BaseName(name: string): string;
-
-  /**
-   * Get the directory name of a path.
-   * @param name The path.
-   * @returns Directory name.
-   */
-  DirName(name: string): string;
-
-  /**
-   * Get the extension of a file name.
-   * @param name The file name.
-   * @returns Extension name.
-   */
-  ExtName(name: string): string;
 }
 

@@ -1,4 +1,4 @@
-import { Process } from "@yao/runtime";
+import { FS, Process } from "@yao/runtime";
 
 function TestProcess() {
   Process("models.widget.Get", { wheres: [{ column: "id", value: 1 }] });
@@ -13,6 +13,16 @@ function TestProcess() {
 
 function TestFS() {
   Process("fs.app.ReadFile", "app/models/widget.ts");
+  Process(
+    "fs.app.WriteFile",
+    "app/prompts/widget.ts.md",
+    "export class Widget {}"
+  );
+
+  const fs = new FS("data");
+  const raw = fs.ReadFile("prompts/model.yml");
+  const n = fs.WriteFile("prompts/model.yml.test.md", raw);
+  console.log(n);
 }
 
 function TestHTTP() {

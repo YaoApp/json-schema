@@ -1,443 +1,424 @@
 
-export type FileSystemRoot = "app" | "data";
+export type FileSystemName = "app" | "data" | string;
 
-/**
- * Upload Progress Information
- */
+export interface UploadFile {
+  Hash(): string;                 // Returns a unique identifier based on the file hash
+  IsChunk(): boolean;             // Determines if the file is part of a larger chunked upload
+  Name: string;                   // Original file name
+  ChunkFileName(): string;        // Name of the chunk file
+  TempFile: string;               // Temporary file path
+  UID: string;                    // Unique Identifier for the file
+  TotalSize(): number;            // Total size of the file for chunked uploads
+  Sync: boolean;                  // Flag to determine if the upload is synchronous
+}
+
 export interface UploadProgress {
-    // Total size of the upload
-    Total: number;
-    // Uploaded size so far
-    Uploaded: number;
-    // Whether the upload is completed
-    Completed: boolean;
+  Total: number;                  // Total size of the upload
+  Uploaded: number;               // Amount uploaded so far
+  Completed: boolean;             // Upload completion status
 }
 
 /**
  * Read file content
- * @param process the process name in the format of `fs.${FileSystemRoot}.ReadFile`
- * @param filename file name relative to the root
- * @returns file contents as a string
+ * @param process fs.${FileSystemName}.ReadFile
+ * @param filename string file name relative to the root
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.ReadFile`,
-    filename: string
+  process: `fs.${FileSystemName}.ReadFile`,
+  filename: string
 ): string;
 
 /**
  * Read file content as buffer
- * @param process the process name in the format of `fs.${FileSystemRoot}.ReadFileBuffer`
- * @param filename file name relative to the root
- * @returns file contents as a buffer
+ * @param process fs.${FileSystemName}.ReadFileBuffer
+ * @param filename string file name relative to the root
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.ReadFileBuffer`,
-    filename: string
+  process: `fs.${FileSystemName}.ReadFileBuffer`,
+  filename: string
 ): Uint8Array;
 
 /**
  * Write file content
- * @param process the process name in the format of `fs.${FileSystemRoot}.WriteFile`
- * @param filename file name relative to the root
- * @param content the content to write to the file
- * @param perm file permissions
- * @returns number of bytes written
+ * @param process fs.${FileSystemName}.WriteFile
+ * @param filename string file name relative to the root
+ * @param content string content to write
+ * @param perm number file permissions
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.WriteFile`,
-    filename: string,
-    content: string,
-    perm?: number
+  process: `fs.${FileSystemName}.WriteFile`,
+  filename: string,
+  content: string,
+  perm?: number
 ): number;
 
 /**
  * Write file content from buffer
- * @param process the process name in the format of `fs.${FileSystemRoot}.WriteFileBuffer`
- * @param filename file name relative to the root
- * @param content the content in buffer format
- * @param perm file permissions
- * @returns number of bytes written
+ * @param process fs.${FileSystemName}.WriteFileBuffer
+ * @param filename string file name relative to the root
+ * @param content Uint8Array content to write
+ * @param perm number file permissions
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.WriteFileBuffer`,
-    filename: string,
-    content: Uint8Array,
-    perm?: number
+  process: `fs.${FileSystemName}.WriteFileBuffer`,
+  filename: string,
+  content: Uint8Array,
+  perm?: number
 ): number;
 
 /**
- * Append file content
- * @param process the process name in the format of `fs.${FileSystemRoot}.AppendFile`
- * @param filename file name relative to the root
- * @param content the content to append to the file
- * @param perm file permissions
- * @returns number of bytes written
+ * Append content to file
+ * @param process fs.${FileSystemName}.AppendFile
+ * @param filename string file name relative to the root
+ * @param content string content to append
+ * @param perm number file permissions
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.AppendFile`,
-    filename: string,
-    content: string,
-    perm?: number
+  process: `fs.${FileSystemName}.AppendFile`,
+  filename: string,
+  content: string,
+  perm?: number
 ): number;
 
 /**
- * Append file content from buffer
- * @param process the process name in the format of `fs.${FileSystemRoot}.AppendFileBuffer`
- * @param filename file name relative to the root
- * @param content the content in buffer format
- * @param perm file permissions
- * @returns number of bytes written
+ * Append content to file from buffer
+ * @param process fs.${FileSystemName}.AppendFileBuffer
+ * @param filename string file name relative to the root
+ * @param content Uint8Array content to append
+ * @param perm number file permissions
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.AppendFileBuffer`,
-    filename: string,
-    content: Uint8Array,
-    perm?: number
+  process: `fs.${FileSystemName}.AppendFileBuffer`,
+  filename: string,
+  content: Uint8Array,
+  perm?: number
 ): number;
 
 /**
- * Insert file content
- * @param process the process name in the format of `fs.${FileSystemRoot}.InsertFile`
- * @param filename file name relative to the root
- * @param offset the offset at which to insert the content
- * @param content the content to insert into the file
- * @param perm file permissions
- * @returns number of bytes written
+ * Insert content into file
+ * @param process fs.${FileSystemName}.InsertFile
+ * @param filename string file name relative to the root
+ * @param offset number position to start the insert
+ * @param content string content to insert
+ * @param perm number file permissions
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.InsertFile`,
-    filename: string,
-    offset: number,
-    content: string,
-    perm?: number
+  process: `fs.${FileSystemName}.InsertFile`,
+  filename: string,
+  offset: number,
+  content: string,
+  perm?: number
 ): number;
 
 /**
- * Insert file content from buffer
- * @param process the process name in the format of `fs.${FileSystemRoot}.InsertFileBuffer`
- * @param filename file name relative to the root
- * @param offset the offset at which to insert the content
- * @param content the content in buffer format
- * @param perm file permissions
- * @returns number of bytes written
+ * Insert content into file from buffer
+ * @param process fs.${FileSystemName}.InsertFileBuffer
+ * @param filename string file name relative to the root
+ * @param offset number position to start the insert
+ * @param content Uint8Array content to insert
+ * @param perm number file permissions
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.InsertFileBuffer`,
-    filename: string,
-    offset: number,
-    content: Uint8Array,
-    perm?: number
+  process: `fs.${FileSystemName}.InsertFileBuffer`,
+  filename: string,
+  offset: number,
+  content: Uint8Array,
+  perm?: number
 ): number;
 
 /**
- * Read directory content
- * @param process the process name in the format of `fs.${FileSystemRoot}.ReadDir`
- * @param dir directory name relative to the root
- * @param recursive whether to read directories recursively
- * @returns list of directory entries
+ * Read directory contents
+ * @param process fs.${FileSystemName}.ReadDir
+ * @param dir string directory path relative to the root
+ * @param recursive boolean list directories recursively
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.ReadDir`,
-    dir: string,
-    recursive?: boolean
+  process: `fs.${FileSystemName}.ReadDir`,
+  dir: string,
+  recursive?: boolean
 ): string[];
 
 /**
- * Find all files matching the pattern
- * @param process the process name in the format of `fs.${FileSystemRoot}.Glob`
- * @param pattern glob pattern to match files
- * @returns list of matched files
+ * Perform a glob search
+ * @param process fs.${FileSystemName}.Glob
+ * @param pattern string glob pattern
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.Glob`,
-    pattern: string
+  process: `fs.${FileSystemName}.Glob`,
+  pattern: string
 ): string[];
 
 /**
- * Create a new directory
- * @param process the process name in the format of `fs.${FileSystemRoot}.Mkdir`
- * @param dir directory name relative to the root
- * @param perm directory permissions
+ * Create a directory
+ * @param process fs.${FileSystemName}.Mkdir
+ * @param dir string directory path relative to the root
+ * @param perm number directory permissions
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.Mkdir`,
-    dir: string,
-    perm?: number
+  process: `fs.${FileSystemName}.Mkdir`,
+  dir: string,
+  perm?: number
 ): void;
 
 /**
- * Create a new directory with all necessary parents
- * @param process the process name in the format of `fs.${FileSystemRoot}.MkdirAll`
- * @param dir directory name relative to the root
- * @param perm directory permissions
+ * Create a directory and all necessary parents
+ * @param process fs.${FileSystemName}.MkdirAll
+ * @param dir string directory path relative to the root
+ * @param perm number directory permissions
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.MkdirAll`,
-    dir: string,
-    perm?: number
+  process: `fs.${FileSystemName}.MkdirAll`,
+  dir: string,
+  perm?: number
 ): void;
 
 /**
  * Create a temporary directory
- * @param process the process name in the format of `fs.${FileSystemRoot}.MkdirTemp`
- * @param dir directory in which to create a temporary directory
- * @param pattern pattern to use for the temporary directory name
- * @returns path of the created temporary directory
+ * @param process fs.${FileSystemName}.MkdirTemp
+ * @param dir string base directory
+ * @param pattern string pattern for the directory name
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.MkdirTemp`,
-    dir?: string,
-    pattern?: string
+  process: `fs.${FileSystemName}.MkdirTemp`,
+  dir?: string,
+  pattern?: string
 ): string;
 
 /**
- * Remove a file or empty directory
- * @param process the process name in the format of `fs.${FileSystemRoot}.Remove`
- * @param name file or directory name relative to the root
+ * Remove a file or directory
+ * @param process fs.${FileSystemName}.Remove
+ * @param name string path relative to the root
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.Remove`,
-    name: string
+  process: `fs.${FileSystemName}.Remove`,
+  name: string
 ): void;
 
 /**
- * Remove a file or directory and its contents
- * @param process the process name in the format of `fs.${FileSystemRoot}.RemoveAll`
- * @param name file or directory name relative to the root
+ * Remove a directory and its contents
+ * @param process fs.${FileSystemName}.RemoveAll
+ * @param name string path relative to the root
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.RemoveAll`,
-    name: string
+  process: `fs.${FileSystemName}.RemoveAll`,
+  name: string
 ): void;
 
 /**
- * Check if a file or directory exists
- * @param process the process name in the format of `fs.${FileSystemRoot}.Exists`
- * @param name file or directory name relative to the root
- * @returns true if the file or directory exists, false otherwise
+ * Check existence of a file or directory
+ * @param process fs.${FileSystemName}.Exists
+ * @param name string path relative to the root
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.Exists`,
-    name: string
+  process: `fs.${FileSystemName}.Exists`,
+  name: string
 ): boolean;
 
 /**
- * Check if a path is a directory
- * @param process the process name in the format of `fs.${FileSystemRoot}.IsDir`
- * @param name path name relative to the root
- * @returns true if the path is a directory, false otherwise
+ * Check if path is a directory
+ * @param process fs.${FileSystemName}.IsDir
+ * @param name string path relative to the root
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.IsDir`,
-    name: string
+  process: `fs.${FileSystemName}.IsDir`,
+  name: string
 ): boolean;
 
 /**
- * Check if a path is a file
- * @param process the process name in the format of `fs.${FileSystemRoot}.IsFile`
- * @param name path name relative to the root
- * @returns true if the path is a file, false otherwise
+ * Check if path is a file
+ * @param process fs.${FileSystemName}.IsFile
+ * @param name string path relative to the root
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.IsFile`,
-    name: string
+  process: `fs.${FileSystemName}.IsFile`,
+  name: string
 ): boolean;
 
 /**
- * Check if a path is a symbolic link
- * @param process the process name in the format of `fs.${FileSystemRoot}.IsLink`
- * @param name path name relative to the root
- * @returns true if the path is a symbolic link, false otherwise
+ * Check if path is a symbolic link
+ * @param process fs.${FileSystemName}.IsLink
+ * @param name string path relative to the root
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.IsLink`,
-    name: string
+  process: `fs.${FileSystemName}.IsLink`,
+  name: string
 ): boolean;
 
 /**
- * Change the mode of a file
- * @param process the process name in the format of `fs.${FileSystemRoot}.Chmod`
- * @param name file name relative to the root
- * @param perm new file permissions
+ * Change file mode
+ * @param process fs.${FileSystemName}.Chmod
+ * @param name string path relative to the root
+ * @param perm number file mode
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.Chmod`,
-    name: string,
-    perm: number
+  process: `fs.${FileSystemName}.Chmod`,
+  name: string,
+  perm: number
 ): void;
 
 /**
- * Get the size of a file
- * @param process the process name in the format of `fs.${FileSystemRoot}.Size`
- * @param name file name relative to the root
- * @returns size of the file in bytes
+ * Get file size
+ * @param process fs.${FileSystemName}.Size
+ * @param name string path relative to the root
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.Size`,
-    name: string
+  process: `fs.${FileSystemName}.Size`,
+  name: string
 ): number;
 
 /**
- * Get the mode of a file
- * @param process the process name in the format of `fs.${FileSystemRoot}.Mode`
- * @param name file name relative to the root
- * @returns mode of the file
+ * Get file mode
+ * @param process fs.${FileSystemName}.Mode
+ * @param name string path relative to the root
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.Mode`,
-    name: string
+  process: `fs.${FileSystemName}.Mode`,
+  name: string
 ): number;
 
 /**
- * Get the modification time of a file
- * @param process the process name in the format of `fs.${FileSystemRoot}.ModTime`
- * @param name file name relative to the root
- * @returns modification time as Unix timestamp
+ * Get file modification time
+ * @param process fs.${FileSystemName}.ModTime
+ * @param name string path relative to the root
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.ModTime`,
-    name: string
+  process: `fs.${FileSystemName}.ModTime`,
+  name: string
 ): number;
 
 /**
- * Get the base name of a path
- * @param process the process name in the format of `fs.${FileSystemRoot}.BaseName`
- * @param name path name
- * @returns base name of the path
+ * Get base name of a file path
+ * @param process fs.${FileSystemName}.BaseName
+ * @param name string file path
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.BaseName`,
-    name: string
+  process: `fs.${FileSystemName}.BaseName`,
+  name: string
 ): string;
 
 /**
- * Get the directory name of a path
- * @param process the process name in the format of `fs.${FileSystemRoot}.DirName`
- * @param name path name
- * @returns directory name of the path
+ * Get directory name of a file path
+ * @param process fs.${FileSystemName}.DirName
+ * @param name string file path
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.DirName`,
-    name: string
+  process: `fs.${FileSystemName}.DirName`,
+  name: string
 ): string;
 
 /**
- * Get the extension name of a file
- * @param process the process name in the format of `fs.${FileSystemRoot}.ExtName`
- * @param name file name
- * @returns extension name of the file
+ * Get extension of a file
+ * @param process fs.${FileSystemName}.ExtName
+ * @param name string file path
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.ExtName`,
-    name: string
+  process: `fs.${FileSystemName}.ExtName`,
+  name: string
 ): string;
 
 /**
  * Get the MIME type of a file
- * @param process the process name in the format of `fs.${FileSystemRoot}.MimeType`
- * @param name file name relative to the root
- * @returns MIME type of the file
+ * @param process fs.${FileSystemName}.MimeType
+ * @param name string path relative to the root
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.MimeType`,
-    name: string
+  process: `fs.${FileSystemName}.MimeType`,
+  name: string
 ): string;
 
 /**
  * Move a file
- * @param process the process name in the format of `fs.${FileSystemRoot}.Move`
- * @param src source file name relative to the root
- * @param dst destination file name relative to the root
+ * @param process fs.${FileSystemName}.Move
+ * @param src string source path relative to the root
+ * @param dst string destination path relative to the root
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.Move`,
-    src: string,
-    dst: string
+  process: `fs.${FileSystemName}.Move`,
+  src: string,
+  dst: string
 ): void;
 
 /**
- * Move a file and append the content
- * @param process the process name in the format of `fs.${FileSystemRoot}.MoveAppend`
- * @param src source file name relative to the root
- * @param dst destination file name relative to the root
+ * Append and move a file
+ * @param process fs.${FileSystemName}.MoveAppend
+ * @param src string source path relative to the root
+ * @param dst string destination path relative to the root
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.MoveAppend`,
-    src: string,
-    dst: string
+  process: `fs.${FileSystemName}.MoveAppend`,
+  src: string,
+  dst: string
 ): void;
 
 /**
- * Move a file and insert the content
- * @param process the process name in the format of `fs.${FileSystemRoot}.MoveInsert`
- * @param src source file name relative to the root
- * @param dst destination file name relative to the root
- * @param offset offset at which to insert the content
+ * Insert and move a file
+ * @param process fs.${FileSystemName}.MoveInsert
+ * @param src string source path relative to the root
+ * @param dst string destination path relative to the root
+ * @param offset number position to insert data
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.MoveInsert`,
-    src: string,
-    dst: string,
-    offset: number
+  process: `fs.${FileSystemName}.MoveInsert`,
+  src: string,
+  dst: string,
+  offset: number
 ): void;
 
 /**
- * Zip a directory
- * @param process the process name in the format of `fs.${FileSystemRoot}.Zip`
- * @param src source directory name relative to the root
- * @param dst destination zip file name relative to the root
+ * Zip directories
+ * @param process fs.${FileSystemName}.Zip
+ * @param src string source path relative to the root
+ * @param dst string destination path relative to the root
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.Zip`,
-    src: string,
-    dst: string
+  process: `fs.${FileSystemName}.Zip`,
+  src: string,
+  dst: string
 ): void;
 
 /**
- * Unzip a file and return the file list
- * @param process the process name in the format of `fs.${FileSystemRoot}.Unzip`
- * @param src source zip file name relative to the root
- * @param dst destination directory name relative to the root
- * @returns list of extracted files
+ * Unzip a file
+ * @param process fs.${FileSystemName}.Unzip
+ * @param src string source path relative to the root
+ * @param dst string destination path relative to the root
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.Unzip`,
-    src: string,
-    dst: string
+  process: `fs.${FileSystemName}.Unzip`,
+  src: string,
+  dst: string
 ): string[];
 
 /**
  * Copy a file
- * @param process the process name in the format of `fs.${FileSystemRoot}.Copy`
- * @param src source file name relative to the root
- * @param dst destination file name relative to the root
+ * @param process fs.${FileSystemName}.Copy
+ * @param src string source path relative to the root
+ * @param dst string destination path relative to the root
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.Copy`,
-    src: string,
-    dst: string
+  process: `fs.${FileSystemName}.Copy`,
+  src: string,
+  dst: string
 ): void;
 
 /**
- * Upload a file
- * @param process the process name in the format of `fs.${FileSystemRoot}.Upload`
- * @param uploadFile the file to be uploaded
- * @param props optional properties for validation
- * @returns path to the uploaded file or upload progress information
+ * Handle file uploads
+ * @param process fs.${FileSystemName}.Upload
+ * @param file UploadFile upload file information
+ * @param props any properties for validation (e.g., maxFilesize, accept)
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.Upload`,
-    uploadFile: any, // Type for uploadFile and props need to be defined based on additional context
-    props?: any // Placeholder for additional arguments
+  process: `fs.${FileSystemName}.Upload`,
+  file: UploadFile,
+  props?: { [key: string]: any }
 ): string | { path: string; uid: string; progress: UploadProgress };
 
 /**
- * Download a file
- * @param process the process name in the format of `fs.${FileSystemRoot}.Download`
- * @param filename file name relative to the root
- * @returns the file content and its type
+ * Handle file downloads
+ * @param process fs.${FileSystemName}.Download
+ * @param file string file to download relative to the root
  */
 export declare function Process(
-    process: `fs.${FileSystemRoot}.Download`,
-    filename: string
+  process: `fs.${FileSystemName}.Download`,
+  file: string
 ): { content: any; type: string };
+
