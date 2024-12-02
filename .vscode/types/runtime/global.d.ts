@@ -75,3 +75,43 @@ export type MigrateOption = {
    */
   reset: boolean;
 };
+
+/**
+ * The search result.
+ */
+export type SearchResult = {
+  /**
+   * The data items.
+   */
+  data: Record<string, any>[];
+
+  /**
+   * The next page number. -1 no next page.
+   */
+  next: number;
+
+  /**
+   * The current page number.
+   */
+  page: number;
+
+  /**
+   * The total number of pages.
+   */
+  pagecnt: number;
+
+  /**
+   * The number of items per page.
+   */
+  pagesize: number;
+
+  /**
+   * The previous page number. -1 no previous page.
+   */
+  prev: number;
+
+  /**
+   * The total number of items.
+   */
+  total: number;
+};
