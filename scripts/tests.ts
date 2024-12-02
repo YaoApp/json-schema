@@ -1,4 +1,4 @@
-import { FS, Process, Store } from "@yao/runtime";
+import { FS, Process, Query, Store } from "@yao/runtime";
 
 function TestProcess() {
   Process("models.widget.Get", { wheres: [{ column: "id", value: 1 }] });
@@ -37,4 +37,32 @@ function TestStore() {
   const cache = new Store("cache");
   cache.Set("key", "value");
   cache.Get("key");
+}
+
+function TestQuery() {
+  const qb = new Query("default");
+  const rows = qb.Get({
+    from: "pets",
+    debug: true,
+    select: [
+      "category_id",
+      "category.category_name",
+      ":COUNT(pets.id) as total",
+    ],
+    joins: [
+      {
+        left: true,
+        from: "pet_categories as category",
+        key: "category_id",
+        foreign: "category.id",
+      },
+    ],
+    wheres: [
+      { field: "pets.created_at", ">=": "from" },
+      { field: "pets.created_at", "<=": "to" },
+    ],
+    groups: ["category_id"],
+  });
+
+  console.log(rows);
 }

@@ -31,3 +31,15 @@ function GenerateStore() {
   const fs = new FS("app");
   fs.WriteFile(".vscode/types/runtime/store.d.ts", getCode(content));
 }
+
+/**
+ * Generate Process Object definition
+ * yao run scripts.runtime.GenerateQuery
+ */
+function GenerateQuery() {
+  console.log("Generating Query Object definition");
+  const pmt = prompt("runtime/query.yml");
+  const content = send(pmt);
+  const fs = new FS("app");
+  fs.WriteFile(".vscode/types/runtime/query.d.ts", getCode(content));
+}
