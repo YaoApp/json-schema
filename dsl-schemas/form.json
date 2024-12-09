@@ -49,6 +49,14 @@
               "type": "boolean",
               "description": "Whether to hide the breadcrumb navigation, default is false"
             },
+            "viewTitle": {
+              "type": "string",
+              "description": "Custom View Mode Title"
+            },
+            "editTitle": {
+              "type": "string",
+              "description": "Custom Edit Mode Title"
+            },
             "full": {
               "type": "boolean",
               "description": "Whether to display the form in full screen"
