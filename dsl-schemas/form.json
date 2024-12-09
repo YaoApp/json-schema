@@ -829,6 +829,10 @@
         "url": {
           "type": "string"
         },
+        "height": {
+          "type": "string",
+          "description": "The height of the frame, default is 100%"
+        },
         "params": {
           "type": "object",
           "additionalProperties": {
