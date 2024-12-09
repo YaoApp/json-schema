@@ -925,6 +925,10 @@
           "type": "string",
           "description": "Field Name to Bind, use default if not specified"
         },
+        "hideLabel": {
+          "type": "boolean",
+          "description": "Enable to hide the label, default is false"
+        },
         "type": {
           "anyOf": [
             {
@@ -1074,6 +1078,10 @@
         "bind": {
           "type": "string",
           "description": "Field Name to Bind, use default if not specified"
+        },
+        "hideLabel": {
+          "type": "boolean",
+          "description": "Enable to hide the label, default is false"
         },
         "type": {
           "anyOf": [
